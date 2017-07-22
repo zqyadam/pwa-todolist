@@ -12,13 +12,13 @@
                     <v-text-field :type="eye ? 'text' : 'password' " name="input-1" label="密码" id="password" required :append-icon="eye ? 'visibility' : 'visibility_off'" :append-icon-cb="() => (eye = !eye)" v-model="password" min="6" max="" hint="不少于6位" counter></v-text-field>
                 </v-flex>
             </v-layout>
-            <v-layout>
-                <v-flex xs4 offset-xs2>
-                    <v-btn primary light>登录</v-btn>
+            <v-layout justify-center>
+                <v-flex xs6>
+                    <v-btn primary light block>登录</v-btn>
                 </v-flex>
-                <v-flex xs4>
+                <!-- <v-flex xs4>
                     <v-btn>清空</v-btn>
-                </v-flex>
+                </v-flex> -->
             </v-layout>
             <v-layout>
                 <v-flex xs8 offset-xs2>
