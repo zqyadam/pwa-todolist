@@ -1,6 +1,6 @@
 # pwa-todolist
 
-> 这是一个 pwa 项目
+> 这是一个基于PWA的TodoList，使用Lavas进行构建
 
 ## npm 相关命令
 
@@ -23,6 +23,3 @@ npm run build
 # 构建线上生产环境产物并且查看构建分析报告
 npm run build --report
 ```
-
-Lavas 工程模版基于 [vue-template](https://github.com/vuejs-templates/webpack) 模版创建。
-如果想要了解具体如何玩转整个 Lavas 创建的 PWA 工程, 请查看 [vue-template 指南](http://vuejs-templates.github.io/webpack/) 和 [vue-loader 指南](http://vuejs.github.io/vue-loader)。

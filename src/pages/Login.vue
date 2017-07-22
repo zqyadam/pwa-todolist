@@ -25,7 +25,6 @@
                     <p>
                         还没有账号？注册一个吧~
                         <v-btn error flat small floating tag="a" to="/register">立即注册</v-btn>
-                        <!--  -->
                     </p>
                 </v-flex>
             </v-layout>
@@ -55,6 +54,7 @@ export default {
     },
     activated:function() {
         this.setAppHeader({
+        	title:'Todo List',
             show: true,
             showMenu: false,
             showBack: false,
