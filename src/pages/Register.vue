@@ -8,12 +8,12 @@
             </v-layout>
             <v-layout justify-center>
                 <v-flex xs8>
-                    <v-text-field name="input-1" label="请输入邮箱" id="username" v-model.trim="email" required :rules="[checkEmail]"></v-text-field>
+                    <v-text-field prepend-icon="email" name="input-1" label="请输入邮箱" id="username" v-model.trim="email" required :rules="[checkEmail]"></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout justify-center>
                 <v-flex xs8>
-                    <v-text-field :type="eye ? 'text' : 'password' " name="input-1" label="请输入密码" id="password" required :append-icon="eye ? 'visibility' : 'visibility_off'" :append-icon-cb="() => (eye = !eye)" v-model.trim="password"  :rules="[checkPassword]"></v-text-field>
+                    <v-text-field prepend-icon="lock" :type="eye ? 'text' : 'password' " name="input-1" label="请输入密码" id="password" required :append-icon="eye ? 'visibility' : 'visibility_off'" :append-icon-cb="() => (eye = !eye)" :rules="[checkPassword]" v-model.trim="password" counter></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout justify-center>
@@ -25,8 +25,9 @@
     </div>
 </template>
 <script>
+
 import { mapActions } from 'vuex';
-import { emailCheck } from '../common/common.js'
+import { emailCheck,clearSpace } from '../common/common.js'
 
 export default {
     name: 'register',
@@ -41,15 +42,12 @@ export default {
         ...mapActions('appShell/appHeader', [
             'setAppHeader'
         ]),
-        clearSpace:function(str) {
-        	return str.replace(/\s/g,'');
-        },
         checkPassword: function() {
-            this.password = this.clearSpace(this.password);
-            return (this.password.length >= 6) ? true : '6-25位密码，区分大小写，不能用空格';
+            this.password = clearSpace(this.password);
+            return (this.password.length >= 6) ? true : '6-25位密码，不能用空格';
         },
         checkEmail: function() {
-            this.email = this.clearSpace(this.email);
+            this.email = clearSpace(this.email);
             if (!this.email) {
             	return '邮箱不能为空';
             }
