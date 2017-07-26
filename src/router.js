@@ -22,7 +22,8 @@ export function createRouter() {
     let router = new Router({
 
         // history 模式，需要服务器后端配合做路由代理，将所有的前端路由同步代理到 /
-        mode: 'history',
+        // Adam add: 取消默认的history模式，因为github pages无法进行服务器端配置
+        // mode: 'history',
         routes: [
             {
                 path: '/',
@@ -77,6 +78,7 @@ export function createRouter() {
     const SLIDE_RIGHT = 'slide-right';
 
     router.beforeEach((to, from, next) => {
+        console.log(HISTORY_STACK);
         if (router.app.$store) {
 
             // 如果不需要切换动画，直接返回

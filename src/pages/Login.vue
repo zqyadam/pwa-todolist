@@ -12,40 +12,19 @@
                     <v-text-field prepend-icon="lock" v-model.trim="password" :type="eye ? 'text' : 'password' " name="input-1" label="密码" id="password" required counter :append-icon="eye ? 'visibility' : 'visibility_off'" :append-icon-cb="function(){eye = !eye}" :rules="[checkPassword]"></v-text-field>
                 </v-flex>
             </v-layout>
-            <transition name="fade" mode="out-in">
-                <div v-if="!register">
-                    <v-layout justify-center>
-                        <v-flex xs6>
-                            <v-btn primary light block>登录</v-btn>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout>
-                        <v-flex xs8 offset-xs2>
-                            <p>
-                                还没有账号？注册一个吧~
-                                <v-btn error flat small floating @click.native="function(){register = true}">立即注册</v-btn>
-                                <!-- to="/register" -->
-                            </p>
-                        </v-flex>
-                    </v-layout>
-                </div>
-                <!-- </transition>
-            <transition name="fade" mode="out-in"> -->
-                <div v-else>
-                    <v-layout justify-center>
-                        <v-flex xs6>
-                            <v-btn primary light block>立即注册</v-btn>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout>
-                        <v-flex xs3 offset-xs7>
-                            <p>
-                                <v-btn error flat small floating @click.native="function(){register = false}">已有账号</v-btn>
-                            </p>
-                        </v-flex>
-                    </v-layout>
-                </div>
-            </transition>
+            <v-layout justify-center>
+                <v-flex xs6>
+                    <v-btn primary light block>登录</v-btn>
+                </v-flex>
+            </v-layout>
+            <v-layout>
+                <v-flex xs8 offset-xs2>
+                    <p>
+                        还没有账号？注册一个吧~
+                        <v-btn error flat small floating  :to="{name:'register'}" router >立即注册</v-btn>
+                    </p>
+                </v-flex>
+            </v-layout>
         </v-container>
     </div>
 </template>
@@ -60,7 +39,6 @@ export default {
             email: '',
             password: '',
             eye: false,
-            register: false
         }
     },
     methods: {
@@ -112,6 +90,7 @@ export default {
     width: 40%;
     margin-bottom: 10px;
 }
+
 
 
 
