@@ -8,13 +8,18 @@ import Router from 'vue-router';
 import * as types from './store/mutation-types';
 
 // 定义切割点，异步加载路由组件
-let Home = () => import('@/pages/Home.vue');
-let Login = () => import('@/pages/Login.vue');
-let Register = () => import('@/pages/Register.vue');
-let Detail = () => import('@/pages/Detail.vue');
-let NotFound = () => import('@/pages/NotFound.vue');
-let User = () => import('@/pages/User.vue');
-let Search = () => import('@/pages/Search.vue');
+// let Home = () => import('@/pages/Home.vue');
+let Login = () =>
+    import ('@/pages/Login.vue');
+let Register = () =>
+    import ('@/pages/Register.vue');
+let Todo = () =>
+    import ('@/pages/Todo.vue');
+// let Detail = () => import('@/pages/Detail.vue');
+let NotFound = () =>
+    import ('@/pages/NotFound.vue');
+// let User = () => import('@/pages/User.vue');
+// let Search = () => import('@/pages/Search.vue');
 
 Vue.use(Router);
 
@@ -24,8 +29,7 @@ export function createRouter() {
         // history 模式，需要服务器后端配合做路由代理，将所有的前端路由同步代理到 /
         // Adam add: 取消默认的history模式，因为github pages无法进行服务器端配置
         // mode: 'history',
-        routes: [
-            {
+        routes: [{
                 path: '/',
                 name: 'home',
                 component: Login
@@ -34,6 +38,11 @@ export function createRouter() {
                 path: '/register',
                 name: 'register',
                 component: Register
+            },
+            {
+                path: '/todo',
+                name: 'todo',
+                component: Todo
             },
             // {
             //     path: '/detail/:id',
@@ -86,7 +95,7 @@ export function createRouter() {
 
                 // 判断当前是前进还是后退，添加不同的动画效果
                 let pageTransitionName = isForward(to, from) ? SLIDE_LEFT : SLIDE_RIGHT;
-                router.app.$store.commit(`appShell/${types.SET_PAGE_TRANSITION_NAME}`, {pageTransitionName});
+                router.app.$store.commit(`appShell/${types.SET_PAGE_TRANSITION_NAME}`, { pageTransitionName });
             }
         }
         next();

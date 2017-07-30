@@ -2,27 +2,29 @@
     <div>
         <v-container fluid>
             <v-layout justify-center>
-                <p class="ma-5">
-                    用户注册
-                </p>
+                <v-flex lg4>
+                    <p class="ma-5">
+                        用户注册
+                    </p>
+                </v-flex>
             </v-layout>
             <v-layout justify-center>
-                <v-flex xs8>
+                <v-flex xs8 lg4>
                     <v-text-field prepend-icon="email" name="email" label="请输入邮箱" id="email" v-model.trim="email" required :rules="[checkEmail]"></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout justify-center>
-                <v-flex xs8>
+                <v-flex xs8 lg4>
                     <v-text-field prepend-icon="account_box" type="text" name="username" label="请输入昵称" id="username" v-model.trim="username"></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout justify-center>
-                <v-flex xs8>
+                <v-flex xs8 lg4>
                     <v-text-field prepend-icon="lock" :type="eye ? 'text' : 'password' " name="input-1" label="请输入密码" id="password" required :append-icon="eye ? 'visibility' : 'visibility_off'" :append-icon-cb="() => (eye = !eye)" :rules="[checkPassword]" v-model.trim="password" counter></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout justify-center>
-                <v-flex xs6 class="pa-3">
+                <v-flex xs6 lg3 class="pa-3">
                     <v-btn primary light block @click.native="register" v-text="btnText"></v-btn>
                 </v-flex>
             </v-layout>
@@ -103,6 +105,7 @@ export default {
                 this.snackbarType = 'success';
                 this.btnText = "注册成功";
                 this.showSnackbar();
+                this.$router.push({name:'todo'})
             }, err => {
                 // 注册失败
                 console.log(err.message);

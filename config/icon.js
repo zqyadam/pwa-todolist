@@ -11,11 +11,10 @@ module.exports = {
     prefix: 'svg-',
 
     // 用户自定义的svg文件夹
-    svgDir: path.resolve(__dirname, '../src/assets/svg')
+    svgDir: path.resolve(__dirname, '../src/assets/svg'),
 
-    // ,
     // 项目中使用的fontawesome名
     // icons: [
-    //     'envelope'
+    //     'square-o'
     // ]
 };

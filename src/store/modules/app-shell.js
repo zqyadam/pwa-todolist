@@ -276,36 +276,49 @@ export default {
                 navs: [
                     {
                         // 按钮的名字
-                        name: 'home',
+                        name: 'undone',
 
                         // 显示的 icon
-                        icon: 'home',
+                        icon: 'schedule',//watch_later
 
                         // 显示的文字
-                        text: '主页',
+                        text: '未完成',
 
                         // 是否是当前激活的
                         active: true,
 
                         // 路由
-                        route: {
-                            name: 'home',
-                            path: '/'
-                        }
+                        // route: {
+                        //     name: 'home',
+                        //     path: '/'
+                        // }
                     },
                     {
                         // 按钮的名字
-                        name: 'user',
+                        name: 'done',
 
                         // 显示的 icon
-                        icon: 'person',
+                        icon: 'done',
 
                         // 显示的文字
-                        text: '个人中心',
+                        text: '已完成',
 
                         // 路由信息
-                        route: '/user'
-                    }
+                        // route: '/user'
+                    },
+                    // {
+                    //     // 按钮的名字
+                    //     name: 'important',
+
+                    //     // 显示的 icon
+                    //     icon: 'ring_volume',
+
+                    //     // 显示的文字
+                    //     text: '重要', 
+
+                    //     // 路由信息
+                    //     // route: '/todo'
+                    // }
                 ]
             },
             actions: {
