@@ -15,7 +15,7 @@
             </v-layout>
             <v-layout justify-center>
                 <v-flex xs8 lg4>
-                    <v-text-field prepend-icon="account_box" type="text" name="username" label="请输入昵称" id="username" v-model.trim="username"></v-text-field>
+                    <v-text-field prepend-icon="account_box" type="text" name="nickname" label="请输入昵称" id="nickname" v-model.trim="nickname"></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout justify-center>
@@ -38,7 +38,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { emailCheck, clearSpace } from '../common/common.js'
-import { registeUser } from '../common/api.js'
+import { registeUser, codeToMessage } from '../common/api.js'
 
 
 export default {
@@ -46,7 +46,7 @@ export default {
     data() {
         return {
             email: '11@qq.com',
-            username: '',
+            nickname: '',
             password: '111111',
             eye: false,
             btnText: '立即注册',
@@ -59,7 +59,19 @@ export default {
         ...mapActions('appShell/appHeader', [
             'setAppHeader'
         ]),
-        showSnackbar: function() {
+        init() {
+        	this.email= '11@qq.com';
+            this.nickname= '';
+            this.password= '111111';
+            this.eye= false;
+            this.btnText= '立即注册';
+            this.snackbar= false;
+            this.snackbarType= '';
+            this.snackbarMsg= '';
+        },
+        showSnackbar: function(type, msg) {
+            this.snackbarType = type;
+            this.snackbarMsg = msg;
             this.snackbar = true;
         },
         checkPassword: function() {
@@ -69,13 +81,13 @@ export default {
             }
             return (this.password.length >= 6) ? true : '6-25位密码，不能用空格';
         },
-        getUsername: function() {
-            if (this.username) {
-                return this.username;
+        getNickname: function() {
+            if (this.nickname) {
+                return this.nickname;
             }
             if (this.email.length >= 0) {
-                this.username = this.email.split('@')[0];
-                return this.username;
+                this.nickname = this.email.split('@')[0];
+                return this.nickname;
             }
         },
         checkEmail: function() {
@@ -89,29 +101,24 @@ export default {
 
             if (this.checkEmail() !== true || this.checkPassword() !== true) {
                 // 验证邮箱和密码失败
-
                 return '';
             }
             // 构建用户信息
             let userinfo = {
                 email: this.email,
-                username: this.getUsername(),
+                username: this.getNickname(),
                 password: this.password
             }
             this.btnText = "注册中..."
             registeUser(userinfo).then(loginedUser => {
                 // 注册成功
-                this.snackbarMsg = '注册成功！'
-                this.snackbarType = 'success';
+                this.showSnackbar('success', '注册成功！');
                 this.btnText = "注册成功";
-                this.showSnackbar();
-                this.$router.push({name:'todo'})
+                this.$router.push({ name: 'todo' })
             }, err => {
                 // 注册失败
                 console.log(err.message);
-                this.snackbarMsg = err.message;
-                this.snackbarType = 'error';
-                this.showSnackbar();
+                this.showSnackbar('error', codeToMessage(err.code));
                 this.btnText = "立即注册";
             })
             console.log(userinfo);
@@ -130,6 +137,7 @@ export default {
                 }
             }]
         });
+        this.init();
     }
 }
 

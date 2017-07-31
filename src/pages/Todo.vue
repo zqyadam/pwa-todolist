@@ -140,8 +140,9 @@ export default {
             }]
         });
         this.showBottomNav();
-
-        EventBus.$on('app-bottom-navigator:click-nav', (eventData) => {
+    },
+    created:function() {
+    	 EventBus.$on('app-bottom-navigator:click-nav', (eventData) => {
             console.log(eventData);
             if (eventData.name === 'done') {
                 this.done = true;

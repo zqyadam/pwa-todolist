@@ -6,6 +6,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import * as types from './store/mutation-types';
+import { isLogedin } from '@/common/api.js'
 
 // 定义切割点，异步加载路由组件
 // let Home = () => import('@/pages/Home.vue');
@@ -32,17 +33,26 @@ export function createRouter() {
         routes: [{
                 path: '/',
                 name: 'home',
-                component: Login
+                component: Login,
+                meta: {
+                    notKeepAlive: true
+                }
             },
             {
                 path: '/register',
                 name: 'register',
-                component: Register
+                component: Register,
+                meta: {
+                    notKeepAlive: true
+                }
             },
             {
                 path: '/todo',
                 name: 'todo',
-                component: Todo
+                component: Todo,
+                meta: {
+                    requiresAuth: true
+                }
             },
             // {
             //     path: '/detail/:id',
@@ -66,6 +76,12 @@ export function createRouter() {
                 path: '/404',
                 name: 'notFound',
                 component: NotFound
+            },
+            {
+                path:'*',
+                redirect:{
+                    name:'notFound'
+                }
             }
         ]
     });
@@ -87,18 +103,36 @@ export function createRouter() {
     const SLIDE_RIGHT = 'slide-right';
 
     router.beforeEach((to, from, next) => {
-        console.log(HISTORY_STACK);
-        if (router.app.$store) {
 
-            // 如果不需要切换动画，直接返回
-            if (router.app.$store.state.appShell.needPageTransition) {
+        // console.log(router.app.$store.state.user.currentUser);
+        if (to.matched.some(record => record.meta.requiresAuth)) {
+            if (router.app.$store) {
+                // 如果不需要切换动画，直接返回
+                if (router.app.$store.state.appShell.needPageTransition) {
 
-                // 判断当前是前进还是后退，添加不同的动画效果
-                let pageTransitionName = isForward(to, from) ? SLIDE_LEFT : SLIDE_RIGHT;
-                router.app.$store.commit(`appShell/${types.SET_PAGE_TRANSITION_NAME}`, { pageTransitionName });
+                    // 判断当前是前进还是后退，添加不同的动画效果
+                    let pageTransitionName = isForward(to, from) ? SLIDE_LEFT : SLIDE_RIGHT;
+                    router.app.$store.commit(`appShell/${types.SET_PAGE_TRANSITION_NAME}`, { pageTransitionName });
+                }
+
+                if (!isLogedin()) {
+                    next({
+                        name:'home'
+                        // path: '/Login',
+                        // query: { redirect: to.fullPath }
+                    })
+                } else {
+                    next()
+                }
+
+            } else {
+                next({
+                    name:'home'
+                })
             }
+        } else {
+            next() // 确保一定要调用 next()
         }
-        next();
     });
 
     return router;

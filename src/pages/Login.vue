@@ -17,8 +17,8 @@
                 </v-flex>
             </v-layout>
             <v-layout justify-center>
-                <v-flex xs6  lg3>
-                    <v-btn primary light block>登录</v-btn>
+                <v-flex xs6 lg3>
+                    <v-btn primary light block @click.native="login">登录</v-btn>
                 </v-flex>
             </v-layout>
             <v-layout>
@@ -30,11 +30,17 @@
                 </v-flex>
             </v-layout>
         </v-container>
+        <v-snackbar v-model="snackbar" :success="snackbarType === 'success'" :error="snackbarType === 'error'" :timeout="3000">
+            {{ snackbarMsg }}
+            <v-btn dark flat @click.native="snackbar = false">关闭</v-btn>
+        </v-snackbar>
     </div>
 </template>
 <script>
 import { mapActions } from 'vuex';
 import { emailCheck, clearSpace } from '../common/common.js'
+
+import { requestLogin, codeToMessage } from '@/common/api.js'
 
 export default {
     name: 'login',
@@ -43,6 +49,9 @@ export default {
             email: '',
             password: '',
             eye: false,
+            snackbar: false,
+            snackbarType: '',
+            snackbarMsg: '',
         }
     },
     methods: {
@@ -52,7 +61,14 @@ export default {
         ...mapActions('appShell/appBottomNavigator', [
             'hideBottomNav'
         ]),
-
+        ...mapActions('user', [
+            'setUserInfo'
+        ]),
+        showSnackbar: function(type, msg) {
+            this.snackbarType = type;
+            this.snackbarMsg = msg;
+            this.snackbar = true;
+        },
         checkPassword: function() {
             this.password = clearSpace(this.password);
             if (!this.password) {
@@ -66,18 +82,74 @@ export default {
                 return '';
             }
             return emailCheck(this.email) ? true : '请输入正确的邮箱格式';
+        },
+        login: function() {
+            console.log('try login');
+            if (this.checkEmail() !== true || this.checkPassword() !== true) {
+                // 验证邮箱和密码失败
+                console.log(this.email);
+                console.log(this.password);
+                console.log('email or password check failed');
+                return '';
+            }
+            requestLogin({ email: this.email, password: this.password }).then((loginedInUser) => {
+                let userInfo = loginedInUser.toJSON();
+                console.log(userInfo);
+                if (navigator.credentials) {
+                    let cred = new PasswordCredential({
+                        id: this.email,
+                        password: this.password,
+                    })
+                    return navigator.credentials.store(cred).then(() => {
+                        console.log('navigator store success');
+                        // return cred;
+                        return Promise.resolve(loginedInUser)
+                    })
+                }
+                return Promise.resolve(loginedInUser)
+            }, (err) => {
+                console.log(codeToMessage(err.code));
+                this.showSnackbar('error', codeToMessage(err.code));
+                return Promise.reject(err);
+            }).then((loginedData) => {
+            	// 登录成功，存储用户信息
+                console.log('user login passed, going to todo page');
+                console.log(loginedData);
+                this.setUserInfo(loginedData);
+                this.$router.push({name:'todo'})
+            })
+
         }
     },
-    activated: function() {
+    created: function() {
         this.setAppHeader({
             title: 'Todo List',
             show: true,
             showMenu: false,
             showBack: false,
             showLogo: false,
-            actions:[]
+            actions: []
         });
         this.hideBottomNav();
+        if (navigator.credentials) {
+            navigator.credentials.get({
+                password: true
+            }).then((cred) => {
+                console.log('navigator get credential success');
+                console.log(cred);
+                if (!cred) {
+                    return;
+                }
+                this.email = cred.id;
+                this.password = cred.password;
+                this.login();
+            }, (err) => {
+                console.log('navigator get credential failed');
+                console.log(err);
+                this.email = '';
+                this.password = '';
+            })
+        }
     }
 }
 
@@ -91,8 +163,9 @@ export default {
     transform: translate(-50%, -50%);
 }
 
-.container img{
-	width:100%;
-	height:100%;
+.container img {
+    width: 100%;
+    height: 100%;
 }
+
 </style>
