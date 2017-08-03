@@ -13,6 +13,10 @@ import Icon from 'vue-awesome/components/Icon.vue';
 Vue.use(Vuetify);
 Vue.component('icon', Icon);
 
+var VueTouch = require('vue-touch')
+Vue.use(VueTouch, {name: 'v-touch'})
+
+
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */

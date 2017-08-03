@@ -13,9 +13,12 @@ export let Todo = AV.Object.extend('Todo');
 export let requestLogin = function(loginParams) {
     return AV.User.logIn(loginParams.email, loginParams.password);
 }
-export let isLogedin = function() {
-    console.log(AV.User.current());
-    return AV.User.current() ? true : false;
+export let isLogedin = function(currentUser) {
+    // console.log('currentUser:');
+    // console.log(currentUser);
+    // console.log(AV.User.current());
+    // console.log(currentUser === AV.User.current());
+    return currentUser === AV.User.current();
 }
 export let getCurrentUser = function() {
     return AV.User.current();
@@ -58,12 +61,18 @@ export let SaveTodoItem = function(item) {
 }
 
 export let LoadServerTodos = function() {
-    var uid = getCurrentUser().id;
-    var ownerQuery = new AV.Query('Todo');
+    let uid = getCurrentUser().id;
+    let ownerQuery = new AV.Query('Todo');
     ownerQuery.equalTo('owner', uid);
-    var enableQuery = new AV.Query('Todo');
+    let enableQuery = new AV.Query('Todo');
     enableQuery.equalTo('enable', true);
     return new AV.Query.and(ownerQuery, enableQuery).find();
+
+    //  let uid = getCurrentUser().id;
+    // let ownerQuery = new AV.Query('Todo');
+    // ownerQuery.equalTo('owner', uid);
+    // ownerQuery.equalTo('enable', true);
+    // return new ownerQuery.find();
 }
 
 export let addRole = function() {

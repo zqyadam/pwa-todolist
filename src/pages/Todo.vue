@@ -9,14 +9,16 @@
                         </v-card-title>
                         <v-card-text class="pa-0">
                             <v-container fluid class="pa-0 pl-3" v-for="todo in todos" :key="todo.text">
-                                <v-layout>
-                                    <v-flex xs1 class="pa-0">
-                                        <v-checkbox v-model="todo.done" error dark class="pa-1" hide-details></v-checkbox>
-                                    </v-flex>
-                                    <v-flex xs11 class="pa-0 pr-2">
-                                        <p class="list" v-html="todo.text"></p>
-                                    </v-flex>
-                                </v-layout>
+	                            <v-touch v-on:swipeleft="onSwipeLeft(todo)" v-on:press="press(todo)">
+	                                <v-layout>
+	                                    <v-flex xs1 class="pa-0">
+	                                        <v-checkbox v-model="todo.done" error dark class="pa-1" hide-details></v-checkbox>
+	                                    </v-flex>
+	                                    <v-flex xs11 class="pa-0 pr-2">
+	                                        <p class="list" v-html="todo.text"></p>
+	                                    </v-flex>
+	                                </v-layout>
+                                </v-touch>
                             </v-container>
                         </v-card-text>
                     </v-card>
@@ -89,7 +91,7 @@
 <script>
 import { mapActions } from 'vuex';
 import EventBus from '@/event-bus';
-
+import { LoadServerTodos } from '@/common/api';
 
 export default {
     name: 'todo',
@@ -124,6 +126,14 @@ export default {
         changeStatus: function(todo) {
             todo.done = !todo.done;
             console.log('changeStatus');
+        },
+        onSwipeLeft:function(todo) {
+        	console.log('swipeleft');
+        	console.log(todo);
+        },
+        press:function(todo) {
+        	console.log('press');
+        	console.log(todo);
         }
     },
     activated: function() {
@@ -150,6 +160,17 @@ export default {
                 this.done = false;
             }
         });
+    	 LoadServerTodos().then((todos)=>{
+    	 	console.log(todos);
+    	 	let mapTodo = new Map();
+    	 	todos.forEach((todo)=>{
+    	 		mapTodo.set(todo.id, todo)
+    	 	})
+    	 	console.log(mapTodo);
+    	 },(err)=>{
+    	 	console.log(err);
+    	 })
+    	// console.log(todos);
     }
 }
 

@@ -104,8 +104,8 @@ export function createRouter() {
 
     router.beforeEach((to, from, next) => {
 
-        // console.log(router.app.$store.state.user.currentUser);
         if (to.matched.some(record => record.meta.requiresAuth)) {
+            // 所访问的页面需要权限验证
             if (router.app.$store) {
                 // 如果不需要切换动画，直接返回
                 if (router.app.$store.state.appShell.needPageTransition) {
@@ -114,24 +114,26 @@ export function createRouter() {
                     let pageTransitionName = isForward(to, from) ? SLIDE_LEFT : SLIDE_RIGHT;
                     router.app.$store.commit(`appShell/${types.SET_PAGE_TRANSITION_NAME}`, { pageTransitionName });
                 }
-
-                if (!isLogedin()) {
+                // 判断是否已经登录
+                if (!isLogedin(router.app.$store.state.user.currentUser)) {
+                    // 没有登录则跳转至登录页面
                     next({
                         name:'home'
-                        // path: '/Login',
-                        // query: { redirect: to.fullPath }
-                    })
+                    });
                 } else {
-                    next()
+                    next();
                 }
 
             } else {
+                // router.app.$store中没有值，则说明是第一次访问，直接跳转登录页面
+                console.log('first visit');
                 next({
                     name:'home'
-                })
+                });
             }
         } else {
-            next() // 确保一定要调用 next()
+            // 所访问的页面不需要权限验证
+            next();
         }
     });
 

@@ -93,8 +93,7 @@ export default {
                 return '';
             }
             requestLogin({ email: this.email, password: this.password }).then((loginedInUser) => {
-                let userInfo = loginedInUser.toJSON();
-                console.log(userInfo);
+                // let userInfo = loginedInUser.toJSON();
                 if (navigator.credentials) {
                     let cred = new PasswordCredential({
                         id: this.email,
@@ -108,7 +107,6 @@ export default {
                 }
                 return Promise.resolve(loginedInUser)
             }, (err) => {
-                console.log(codeToMessage(err.code));
                 this.showSnackbar('error', codeToMessage(err.code));
                 return Promise.reject(err);
             }).then((loginedData) => {
