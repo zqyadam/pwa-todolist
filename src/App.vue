@@ -45,6 +45,10 @@
                 class="app-shell-footer"
                 @click-nav="handleClickBottomNav">
             </app-bottom-navigator>
+            <v-snackbar v-model="appSnackbar.show" :success="appSnackbar.type === 'success'" :error="appSnackbar.type === 'error'" :timeout="3000">
+                {{ appSnackbar.msg }}
+                <v-btn dark flat @click.native="hideSnackbar">关闭</v-btn>
+            </v-snackbar>
         </div>
     </div>
 </template>
@@ -69,7 +73,8 @@ export default {
         ...mapState('appShell', [
             'appHeader',
             'appBottomNavigator',
-            'pageTransitionName'
+            'pageTransitionName',
+            'appSnackbar'
         ])
     },
     methods: {
@@ -82,6 +87,10 @@ export default {
         ]),
         ...mapActions('appShell/appBottomNavigator', [
             'activateBottomNav'
+        ]),
+        ...mapActions('appShell/appSnackbar', [
+            'showSnackbar',
+            'hideSnackbar'
         ]),
         handleBeforeEnter(el) {
             this.setPageSwitching(true);

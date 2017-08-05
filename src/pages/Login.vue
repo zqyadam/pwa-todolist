@@ -30,10 +30,6 @@
                 </v-flex>
             </v-layout>
         </v-container>
-        <v-snackbar v-model="snackbar" :success="snackbarType === 'success'" :error="snackbarType === 'error'" :timeout="3000">
-            {{ snackbarMsg }}
-            <v-btn dark flat @click.native="snackbar = false">关闭</v-btn>
-        </v-snackbar>
     </div>
 </template>
 <script>
@@ -49,9 +45,6 @@ export default {
             email: '',
             password: '',
             eye: false,
-            snackbar: false,
-            snackbarType: '',
-            snackbarMsg: '',
         }
     },
     methods: {
@@ -61,14 +54,12 @@ export default {
         ...mapActions('appShell/appBottomNavigator', [
             'hideBottomNav'
         ]),
+        ...mapActions('appShell/appSnackbar', [
+            'showSnackbar',
+        ]),
         ...mapActions('user', [
             'setUserInfo'
         ]),
-        showSnackbar: function(type, msg) {
-            this.snackbarType = type;
-            this.snackbarMsg = msg;
-            this.snackbar = true;
-        },
         checkPassword: function() {
             this.password = clearSpace(this.password);
             if (!this.password) {
@@ -107,7 +98,7 @@ export default {
                 }
                 return Promise.resolve(loginedInUser)
             }, (err) => {
-                this.showSnackbar('error', codeToMessage(err.code));
+                this.showSnackbar({type:'error', msg:codeToMessage(err.code)});
                 return Promise.reject(err);
             }).then((loginedData) => {
             	// 登录成功，存储用户信息

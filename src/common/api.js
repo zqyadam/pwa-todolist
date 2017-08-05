@@ -50,15 +50,15 @@ export let AddTodoItem = function(item) {
     return todo.save();
 }
 
-export let SaveTodoItem = function(item) {
-    acl.setPublicReadAccess(false);
-    acl.setPublicWriteAccess(false);
-    acl.setWriteAccess(AV.User.current(), true);
-    acl.setReadAccess(AV.User.current(), true);
-    var todo = new Todo(item);
-    todo.setACL(acl);
-    return todo.save();
-}
+// export let SaveTodoItem = function(item) {
+//     acl.setPublicReadAccess(false);
+//     acl.setPublicWriteAccess(false);
+//     acl.setWriteAccess(AV.User.current(), true);
+//     acl.setReadAccess(AV.User.current(), true);
+//     var todo = new Todo(item);
+//     todo.setACL(acl);
+//     return todo.save();
+// }
 
 export let LoadServerTodos = function() {
     let uid = getCurrentUser().id;

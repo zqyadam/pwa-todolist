@@ -50,14 +50,14 @@ export default {
             password: '111111',
             eye: false,
             btnText: '立即注册',
-            snackbar: false,
-            snackbarType: '',
-            snackbarMsg: '',
         }
     },
     methods: {
         ...mapActions('appShell/appHeader', [
             'setAppHeader'
+        ]),
+        ...mapActions('appShell/appSnackbar', [
+            'showSnackbar',
         ]),
         init() {
         	this.email= '11@qq.com';
@@ -68,11 +68,6 @@ export default {
             this.snackbar= false;
             this.snackbarType= '';
             this.snackbarMsg= '';
-        },
-        showSnackbar: function(type, msg) {
-            this.snackbarType = type;
-            this.snackbarMsg = msg;
-            this.snackbar = true;
         },
         checkPassword: function() {
             this.password = clearSpace(this.password);
@@ -112,14 +107,14 @@ export default {
             this.btnText = "注册中..."
             registeUser(userinfo).then(loginedUser => {
                 // 注册成功
-                this.showSnackbar('success', '注册成功！');
+                this.showSnackbar({type:'success', msg:'注册成功！'});
                 this.btnText = "注册成功";
                 this.$router.push({ name: 'list' })
             }, err => {
                 // 注册失败
                 console.log(err.message);
-                this.showSnackbar('error', codeToMessage(err.code));
                 this.btnText = "立即注册";
+                this.showSnackbar({type:'error', msg:codeToMessage(err.code)});
             })
             console.log(userinfo);
         }

@@ -26,3 +26,8 @@ export const INIT_TODO = 'INIT_TODO';
 export const ADD_TODO = 'ADD_TODO';
 export const REMOVE_TODO = 'REMOVE_TODO';
 export const SET_TODO_STATUS = 'SET_TODO_STATUS';
+
+
+/* snackbar */
+export const SHOW_SNACKBAR = 'SHOW_SNACKBAR';
+export const HIDE_SNACKBAR = 'HIDE_SNACKBAR';

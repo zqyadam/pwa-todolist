@@ -3,30 +3,16 @@
         <v-container fluid class="pa-0">
             <v-layout justify-center wrap>
                 <v-flex xs12 lg3>
-                    <v-card flat tile>
-                        <v-card-title class="red--text text--red-1">
-                            重要-紧急
-                        </v-card-title>
-                        <v-card-text class="pa-0">
-                            <v-container fluid class="pa-0 pl-3" v-for="todo in done?ImpEmg.done:ImpEmg.undone" :key="todo.id">
-	                            <v-touch v-on:swipeleft="onSwipeLeft(todo)" v-on:press="press(todo)">
-	                                <v-layout>
-	                                    <v-flex xs1 class="pa-0">
-	                                        <!-- <v-checkbox v-model="todo.attributes.status" error dark class="pa-1" hide-details></v-checkbox> -->
-                                            <v-btn icon dark block class="pa-0 ma-0 red--text" @click.native="toggleTodoStatus(todo)">
-                                                <v-icon> {{ todo.get('status')?'check_box': 'check_box_outline_blank'}}</v-icon>
-                                            </v-btn>
-	                                    </v-flex>
-	                                    <v-flex xs11 class="pa-0 pr-2">
-	                                        <p class="list" v-html="todo.get('content')"></p>
-                                            <span style="color:#ccc;">更新时间： getUpdatedTime(todo)</span>
-	                                    </v-flex>
-	                                </v-layout>
-                                </v-touch>
-                            </v-container>
-                        </v-card-text>
-                    </v-card>
-                    <v-divider></v-divider>
+                    <ListBlock title="重要-紧急" :data="done ? ImpEmg.done : ImpEmg.undone" color="red" :done="done"></ListBlock>
+                </v-flex>
+                 <v-flex xs12 lg3>
+                    <ListBlock title="重要-不紧急" :data="done ? ImpNotEmg.done : ImpNotEmg.undone" color="green" :done="done"></ListBlock>
+                </v-flex>
+                 <v-flex xs12 lg3>
+                    <ListBlock title="不重要-紧急" :data="done ? NotImpEmg.done : NotImpEmg.undone" color="orange" :done="done"></ListBlock>
+                </v-flex>
+                 <v-flex xs12 lg3>
+                    <ListBlock title="不重要-不紧急" :data="done ? NotImpNotEmg.done : NotImpNotEmg.undone" color="accent" :done="done"></ListBlock>
                 </v-flex>
                 <!-- <v-flex xs12 lg3>
                     <v-card flat tile>
@@ -93,25 +79,20 @@
     </div>
 </template>
 <script>
+import ListBlock from '@/components/ListBlock'
+
 import { mapActions, mapGetters } from 'vuex';
 import EventBus from '@/event-bus';
-import { LoadServerTodos } from '@/common/api';
+import { LoadServerTodos, codeToMessage } from '@/common/api';
 
 export default {
     name: 'todo',
+    components:{
+        ListBlock
+    },
     data() {
         return {
             done:false
-            // todos: [{
-            //     done: false,
-            //     text: 'Notify me about updates to apps or games that I downloadedNotify me about updates to apps or games that I downloadedNotify me about updates to apps or games that I downloadedNotify me about updates to apps or games that I downloaded'
-            // }, {
-            //     done: true,
-            //     text: '记得明天写作业'
-            // }, {
-            //     done: false,
-            //     text: '后天还得明天写作业'
-            // }]
         }
     },
     computed:{
@@ -129,6 +110,9 @@ export default {
         ...mapActions('appShell/appBottomNavigator', [
             'showBottomNav'
         ]),
+        ...mapActions('appShell/appSnackbar', [
+            'showSnackbar',
+        ]),
         ...mapActions('todo', [
             'initTodos',
             'setTodoStatus'
@@ -136,31 +120,7 @@ export default {
         edit: function() {
             console.log('list clicked');
         },
-        changeStatus: function(todo) {
-            todo.done = !todo.done;
-            console.log('changeStatus');
-        },
-        onSwipeLeft:function(todo) {
-        	console.log('swipeleft');
-        	console.log(todo);
-            // this.$router.push({
-            //     name:'edit',
-            //     params: {
-            //         id: todo.id
-            //     }
-            // })
-        },
-        press:function(todo) {
-        	console.log('press');
-        	console.log(todo);
-        },
-        toggleTodoStatus:function(todo) {
-            console.log(!todo.get('status'));
-            this.setTodoStatus({
-                id:todo.id,
-                status:!todo.get('status')
-            })
-        }
+        
     },
     activated: function() {
         this.setAppHeader({
@@ -190,9 +150,9 @@ export default {
     	 	console.log(todos);
             this.initTodos(todos)
     	 },(err)=>{
+            this.showSnackbar({type:'error', msg:codeToMessage(err.code)})
     	 	console.log(err);
     	 })
-    	// console.log(todos);
     }
 }
 
@@ -203,19 +163,5 @@ export default {
 }
 
 
-.list {
-    max-height: 76px;
-    margin-right: 10px;
-    margin-bottom: 0;
-    text-align: left;
-    display: -webkit-box;
-    display: -moz-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-all;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    font-size: 16px;
-}
 
 </style>

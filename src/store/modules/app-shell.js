@@ -362,6 +362,67 @@ export default {
                     state = Object.assign(state, appBottomNavigator);
                 }
             }
+        },
+        /**
+         * app shell 底部Snackbar的数据
+         *
+         * @type {Object}
+         */
+
+        appSnackbar: {
+            namespaced: true,
+            state: {
+                /**
+                 * 是否显示snackbar
+                 *
+                 * @type {boolean}
+                 */
+                show: false,
+
+                /**
+                 * snackbar显示样式
+                 *
+                 * @type {String}
+                 */
+                type:'error',
+                /**
+                 * snackbar显示的信息
+                 */
+                msg:''
+
+            },
+            actions: {
+
+                /**
+                 * 显示snackbar
+                 *
+                 * @param {Function} commit commit
+                 */
+                showSnackbar({commit},snackbarInfo) {
+                    commit(types.SHOW_SNACKBAR, snackbarInfo);
+                },
+
+                /**
+                 * 隐藏snackbar
+                 *
+                 * @param {Function} commit commit
+                 */
+                hideSnackbar({commit}) {
+                    commit(types.HIDE_SNACKBAR);
+                },
+
+            },
+            mutations: {
+                [types.SHOW_SNACKBAR](state, snackbarInfo) {
+                    state.type = snackbarInfo.type;
+                    state.msg = snackbarInfo.msg;
+                    state.show = true;
+                },
+                [types.HIDE_SNACKBAR](state) {
+                    state.show = false;
+                }
+            }
         }
+
     }
 };
