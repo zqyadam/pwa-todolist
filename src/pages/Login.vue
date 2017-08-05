@@ -114,7 +114,7 @@ export default {
                 console.log('user login passed, going to todo page');
                 console.log(loginedData);
                 this.setUserInfo(loginedData);
-                this.$router.push({name:'todo'})
+                this.$router.push({name:'list'})
             })
 
         }

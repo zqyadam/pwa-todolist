@@ -114,7 +114,7 @@ export default {
                 // 注册成功
                 this.showSnackbar('success', '注册成功！');
                 this.btnText = "注册成功";
-                this.$router.push({ name: 'todo' })
+                this.$router.push({ name: 'list' })
             }, err => {
                 // 注册失败
                 console.log(err.message);
@@ -124,7 +124,7 @@ export default {
             console.log(userinfo);
         }
     },
-    activated: function() {
+    created: function() {
         this.setAppHeader({
             title: '注册账号',
             show: true,

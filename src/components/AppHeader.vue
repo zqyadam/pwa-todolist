@@ -6,18 +6,18 @@
                 <v-btn
                     icon
                     v-if="showMenu"
-                    @click.native="handleClick('menu')">
+                    @click.native="handleClick('menu')" light>
                     <v-icon class="app-header-icon">menu</v-icon>
                 </v-btn>
                 <v-btn
                     icon
                     v-if="showBack"
-                    @click.native="handleClick('back')">
+                    @click.native="handleClick('back')" light>
                     <v-icon class="app-header-icon">arrow_back</v-icon>
                 </v-btn>
                 <div v-if="showLogo" @click="handleClick('logo')">
                     <slot name="logo">
-                        <icon v-if="logoIcon" :name="logoIcon" class="app-header-icon"></icon>
+                        <icon v-if="logoIcon" :name="logoIcon" class="app-header-icon" light></icon>
                     </slot>
                 </div>
             </div>

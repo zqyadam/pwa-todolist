@@ -62,17 +62,11 @@ export let SaveTodoItem = function(item) {
 
 export let LoadServerTodos = function() {
     let uid = getCurrentUser().id;
-    let ownerQuery = new AV.Query('Todo');
-    ownerQuery.equalTo('owner', uid);
-    let enableQuery = new AV.Query('Todo');
-    enableQuery.equalTo('enable', true);
-    return new AV.Query.and(ownerQuery, enableQuery).find();
-
-    //  let uid = getCurrentUser().id;
-    // let ownerQuery = new AV.Query('Todo');
-    // ownerQuery.equalTo('owner', uid);
-    // ownerQuery.equalTo('enable', true);
-    // return new ownerQuery.find();
+    let todoQuery = new AV.Query('Todo');
+    todoQuery.equalTo('owner', uid);
+    todoQuery.equalTo('enable', true);
+    todoQuery.addDescending('updatedAt');
+    return todoQuery.find()
 }
 
 export let addRole = function() {

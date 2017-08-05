@@ -14,11 +14,12 @@ let Login = () =>
     import ('@/pages/Login.vue');
 let Register = () =>
     import ('@/pages/Register.vue');
-let Todo = () =>
-    import ('@/pages/Todo.vue');
+let List = () =>
+    import ('@/pages/List.vue');
 // let Detail = () => import('@/pages/Detail.vue');
 let NotFound = () =>
     import ('@/pages/NotFound.vue');
+let Edit = ()=>import('@/pages/Edit.vue')
 // let User = () => import('@/pages/User.vue');
 // let Search = () => import('@/pages/Search.vue');
 
@@ -47,11 +48,19 @@ export function createRouter() {
                 }
             },
             {
-                path: '/todo',
-                name: 'todo',
-                component: Todo,
+                path: '/list',
+                name: 'list',
+                component: List,
                 meta: {
                     requiresAuth: true
+                }
+            },
+            {
+                path:'/edit/:id',
+                name:'edit',
+                component:Edit, 
+                meta:{
+                    requiresAuth:true
                 }
             },
             // {
@@ -120,8 +129,6 @@ export function createRouter() {
                     next({
                         name:'home'
                     });
-                } else {
-                    next();
                 }
 
             } else {
@@ -131,10 +138,10 @@ export function createRouter() {
                     name:'home'
                 });
             }
-        } else {
-            // 所访问的页面不需要权限验证
-            next();
         }
+        // 所访问的页面不需要权限验证
+        next();
+       
     });
 
     return router;

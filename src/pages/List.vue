@@ -4,18 +4,22 @@
             <v-layout justify-center wrap>
                 <v-flex xs12 lg3>
                     <v-card flat tile>
-                        <v-card-title class="red--text text--darken-1">
+                        <v-card-title class="red--text text--red-1">
                             重要-紧急
                         </v-card-title>
                         <v-card-text class="pa-0">
-                            <v-container fluid class="pa-0 pl-3" v-for="todo in todos" :key="todo.text">
+                            <v-container fluid class="pa-0 pl-3" v-for="todo in done?ImpEmg.done:ImpEmg.undone" :key="todo.id">
 	                            <v-touch v-on:swipeleft="onSwipeLeft(todo)" v-on:press="press(todo)">
 	                                <v-layout>
 	                                    <v-flex xs1 class="pa-0">
-	                                        <v-checkbox v-model="todo.done" error dark class="pa-1" hide-details></v-checkbox>
+	                                        <!-- <v-checkbox v-model="todo.attributes.status" error dark class="pa-1" hide-details></v-checkbox> -->
+                                            <v-btn icon dark block class="pa-0 ma-0 red--text" @click.native="toggleTodoStatus(todo)">
+                                                <v-icon> {{ todo.get('status')?'check_box': 'check_box_outline_blank'}}</v-icon>
+                                            </v-btn>
 	                                    </v-flex>
 	                                    <v-flex xs11 class="pa-0 pr-2">
-	                                        <p class="list" v-html="todo.text"></p>
+	                                        <p class="list" v-html="todo.get('content')"></p>
+                                            <span style="color:#ccc;">更新时间： getUpdatedTime(todo)</span>
 	                                    </v-flex>
 	                                </v-layout>
                                 </v-touch>
@@ -24,7 +28,7 @@
                     </v-card>
                     <v-divider></v-divider>
                 </v-flex>
-                <v-flex xs12 lg3>
+                <!-- <v-flex xs12 lg3>
                     <v-card flat tile>
                         <v-card-title class="light-green--text">
                             重要-不紧急
@@ -83,13 +87,13 @@
                         </v-card-text>
                     </v-card>
                     <v-divider></v-divider>
-                </v-flex>
+                </v-flex> -->
             </v-layout>
         </v-container>
     </div>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import EventBus from '@/event-bus';
 import { LoadServerTodos } from '@/common/api';
 
@@ -97,21 +101,26 @@ export default {
     name: 'todo',
     data() {
         return {
-            ssss: false,
-            notifications: false,
-            sound: true,
-            widgets: false,
-            todos: [{
-                done: false,
-                text: 'Notify me about updates to apps or games that I downloadedNotify me about updates to apps or games that I downloadedNotify me about updates to apps or games that I downloadedNotify me about updates to apps or games that I downloaded'
-            }, {
-                done: true,
-                text: '记得明天写作业'
-            }, {
-                done: false,
-                text: '后天还得明天写作业'
-            }]
+            done:false
+            // todos: [{
+            //     done: false,
+            //     text: 'Notify me about updates to apps or games that I downloadedNotify me about updates to apps or games that I downloadedNotify me about updates to apps or games that I downloadedNotify me about updates to apps or games that I downloaded'
+            // }, {
+            //     done: true,
+            //     text: '记得明天写作业'
+            // }, {
+            //     done: false,
+            //     text: '后天还得明天写作业'
+            // }]
         }
+    },
+    computed:{
+        ...mapGetters('todo',[
+          'ImpEmg',
+          'ImpNotEmg',
+          'NotImpEmg',
+          'NotImpNotEmg'
+        ])
     },
     methods: {
         ...mapActions('appShell/appHeader', [
@@ -119,6 +128,10 @@ export default {
         ]),
         ...mapActions('appShell/appBottomNavigator', [
             'showBottomNav'
+        ]),
+        ...mapActions('todo', [
+            'initTodos',
+            'setTodoStatus'
         ]),
         edit: function() {
             console.log('list clicked');
@@ -130,10 +143,23 @@ export default {
         onSwipeLeft:function(todo) {
         	console.log('swipeleft');
         	console.log(todo);
+            // this.$router.push({
+            //     name:'edit',
+            //     params: {
+            //         id: todo.id
+            //     }
+            // })
         },
         press:function(todo) {
         	console.log('press');
         	console.log(todo);
+        },
+        toggleTodoStatus:function(todo) {
+            console.log(!todo.get('status'));
+            this.setTodoStatus({
+                id:todo.id,
+                status:!todo.get('status')
+            })
         }
     },
     activated: function() {
@@ -145,7 +171,7 @@ export default {
             actions: [{
                 icon: 'add',
                 route: {
-                    name: 'addTodo'
+                    path: '/edit'
                 }
             }]
         });
@@ -160,13 +186,9 @@ export default {
                 this.done = false;
             }
         });
-    	 LoadServerTodos().then((todos)=>{
+    	LoadServerTodos().then((todos)=>{
     	 	console.log(todos);
-    	 	let mapTodo = new Map();
-    	 	todos.forEach((todo)=>{
-    	 		mapTodo.set(todo.id, todo)
-    	 	})
-    	 	console.log(mapTodo);
+            this.initTodos(todos)
     	 },(err)=>{
     	 	console.log(err);
     	 })

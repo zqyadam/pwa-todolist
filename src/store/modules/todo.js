@@ -1,12 +1,88 @@
-import * from '../mutation-types';
-import { }
+import * as types from '../mutation-types';
 
 let state = {
-	todos: null
+    todos: new Map()
+}
+
+function filterTodos(state, type) {
+    return state.todos ? {
+        done: [...state.todos.values()].filter(todo => ((todo.get('type') === type) && (todo.get('status') === true))),
+        undone: [...state.todos.values()].filter(todo => ((todo.get('type') === type) && (todo.get('status') === false))),
+    } : {}
 }
 
 
+let getters = {
+    ImpEmg: function(state) {
+        return filterTodos(state, 'ImpEmg')
+    },
+    ImpNotEmg: function(state) {
+        return filterTodos(state, 'ImpNotEmg')
+    },
+    NotImpEmg: function(state) {
+        return filterTodos(state, 'NotImpEmg')
+    },
+    NotImpNotEmg: function(state) {
+        return filterTodos(state, 'NotImpNotEmg')
+    },
+}
+
 
 let actions = {
+    initTodos({ commit }, todos) {
+        commit(types.INIT_TODO, todos);
+    },
+    addTodo({ commit }, todo) {
+        commit(types.ADD_TODO, todo);
+    },
+    removeTodo({ commit }, todoID) {
+        commit(types.REMOVE_TODO, todoID)
+    },
+    setTodoStatus({ commit }, todoInfo) {
+        let todo = state.todos.get(todoInfo.id);
+        todo.set('status', todoInfo.status).save().then((changedTodo) => {
+            commit(types.SET_TODO_STATUS, changedTodo)
+        },(err)=>{
+        	console.log(err);
+        })
+    }
+}
 
+
+let mutations = {
+    [types.INIT_TODO](state, todos) {
+        let mapTodo = new Map();
+        todos.forEach((todo) => {
+            mapTodo.set(todo.id, todo)
+        })
+        state.todos = mapTodo;
+    },
+    [types.ADD_TODO](state, todo) {
+        if ((state.todos instanceof Map) && todo.id) {
+            state.todos.set(todo.id, todo)
+        }
+    },
+    [types.REMOVE_TODO](state, todoID) {
+        if ((state.todos instanceof Map) && state.todos.has(todoID)) {
+            state.todos.delete(todoID)
+        }
+    },
+    [types.SET_TODO_STATUS](state, changedTodo) {
+    	console.log(changedTodo);
+        let todos = new Map(state.todos.entries());
+        todos.set(changedTodo.id, changedTodo);
+        console.log(todos === state.todos);
+        state.todos = todos;
+    }
+};
+
+
+
+export default {
+    namespaced: true,
+    /* eslint-disable */
+    actions,
+    getters,
+    mutations,
+    state,
 }

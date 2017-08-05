@@ -15,7 +15,14 @@ export const SAVE_SCROLLTOP = 'SAVE_SCROLLTOP';
 
 
 
-
+/* User info */
 
 export const SET_USER_INFO = 'SET_USER_INFO';
 export const CLEAR_USER_INFO = 'CLEAR_USER_INFO';
+
+
+/* todo info */
+export const INIT_TODO = 'INIT_TODO';
+export const ADD_TODO = 'ADD_TODO';
+export const REMOVE_TODO = 'REMOVE_TODO';
+export const SET_TODO_STATUS = 'SET_TODO_STATUS';
