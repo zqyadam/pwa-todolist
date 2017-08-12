@@ -134,7 +134,7 @@ export default {
                 }
                 // this.email = cred.id;
                 // this.password = cred.password;
-                requestLogin({ email: cred.id, password: cred.password }).then((loginedInUser) => {
+                requestLogin({ email: this.email, password: this.password }).then((loginedInUser) => {
                     // 登录成功，存储用户信息
                     console.log('user login passed from cred, going to todo page');
                     console.log(loginedInUser);
