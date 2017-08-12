@@ -205,6 +205,12 @@ export default {
                     iconRight: ''
                 },
 
+                user:{
+                    name:'test',
+                    location:'Shenyang',
+                    email:'test@test.com'
+                },
+
                 // 分块组
                 blocks: [
                     {
