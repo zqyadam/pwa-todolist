@@ -6,8 +6,8 @@ let state = {
 
 function filterTodos(state, type) {
     return state.todos ? {
-        done: [...state.todos.values()].filter(todo => ((todo.get('type') === type) && (todo.get('status') === true))),
-        undone: [...state.todos.values()].filter(todo => ((todo.get('type') === type) && (todo.get('status') === false))),
+        done: [...state.todos.values()].filter(todo => ((todo.get('type') === type) && (todo.get('status') === true))).sort((todo1, todo2) => {return todo2.updatedAt - todo1.updatedAt}),
+        undone: [...state.todos.values()].filter(todo => ((todo.get('type') === type) && (todo.get('status') === false))).sort((todo1, todo2) => {return todo2.updatedAt - todo1.updatedAt}),
     } : {};
 }
 

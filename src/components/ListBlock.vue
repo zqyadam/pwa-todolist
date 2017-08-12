@@ -5,8 +5,8 @@
                 {{ title }} ({{ data.length }})
             </v-card-title>
             <v-card-text class="pa-0">
-                <v-touch v-on:swipeleft="editTodo(todo)" v-on:press="deleteTodo(todo)" v-on:swiperight="setTodoDone(todo)" v-for="todo in data" :key="todo.id" :options="{ touchAction: 'pan-y' }">
-                    <v-container fluid class="pa-0 pl-3">
+                <v-touch @swipeleft="setTodoUnDone(todo)" @press="deleteTodo(todo)" @swiperight="setTodoDone(todo)" @tap="editTodo(todo)" @panright="!todo.get('status') && onPanStart(todo.id)" @panleft="todo.get('status') && onPanStart(todo.id)" @panend="onPanEnd(todo.id)" v-for="todo in data" :key="todo.id" :options="{ touchAction: 'pan-y' }" :swipe-options="{velocity:0.2,threshold:5}" >
+                    <v-container fluid class="pa-0 pl-3" :ref="'list-'+todo.id" >
                         <v-layout>
                             <v-flex xs1 class="pa-0">
                                 <v-btn icon dark block class="pa-0 ma-0" :class="[ color + '--text']" @click.native="toggleTodoStatus(todo)">
@@ -33,7 +33,7 @@ import { mapActions } from 'vuex';
 export default {
     data() {
         return {
-
+        	
         }
     },
     props: {
@@ -60,11 +60,17 @@ export default {
         onSwipeUp: function() {
             console.log('onSwipeUp');
         },
-        onPanStart: function() {
+        onPanStart: function(id) {
             console.log('onPanStart');
+            console.log(this.$refs['list-'+id]);
+            console.log("2px "+ this.color +" solid");
+            this.$refs['list-'+id][0].style.border = "1px dashed rgba(0,0,0,0.2)";
+            this.$refs['list-'+id][0].style.fontWeight = "bold";
         },
-        onPanEnd: function() {
+        onPanEnd: function(id) {
             console.log('panend');
+            this.$refs['list-'+id][0].style.border="";
+            this.$refs['list-'+id][0].style.fontWeight = "";
         },
         onSwipeLeft: function(todo) {
             console.log('swipeleft:');
@@ -100,6 +106,14 @@ export default {
                 })
             }
         },
+        setTodoUnDone:function(todo) {
+        	if (todo.get('status')) {
+                this.setTodoStatus({
+                    id: todo.id,
+                    status: false
+                })
+            }
+        },
         getUpdatedTime: function(todo) {
             return new Date(todo.updatedAt).format("yyyy-MM-dd hh:mm:ss");
         },
@@ -132,4 +146,7 @@ export default {
     display: block;
 }
 
+.swipeRight{
+	border: 1px solid red;
+}
 </style>

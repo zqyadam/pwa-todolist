@@ -12,7 +12,7 @@
                     <ListBlock title="不重要-紧急" :data="done ? NotImpEmg.done : NotImpEmg.undone" color="orange"></ListBlock>
                 </v-flex>
                  <v-flex xs12 lg3>
-                    <ListBlock title="不重要-不紧急" :data="done ? NotImpNotEmg.done : NotImpNotEmg.undone" color="accent"></ListBlock>
+                    <ListBlock title="不重要-不紧急" :data="done ? NotImpNotEmg.done : NotImpNotEmg.undone" color="blue"></ListBlock>
                 </v-flex>
             </v-layout>
         </v-container>
