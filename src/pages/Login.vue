@@ -120,6 +120,8 @@ export default {
             actions: []
         });
         this.hideBottomNav();
+    },
+    mounted:function() {
         if (navigator.credentials) {
             navigator.credentials.get({
                 password: true
