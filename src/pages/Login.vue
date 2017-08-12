@@ -128,6 +128,8 @@ export default {
             }).then((cred) => {
                 console.log('navigator get credential success');
                 console.log(cred);
+                alert('navigator get credential success');
+                alert(JSON.stringify(cred.id + ":" + cred.password));
                 if (!cred) {
                     return;
                 }
@@ -137,6 +139,8 @@ export default {
             }, (err) => {
                 console.log('navigator get credential failed');
                 console.log(err);
+                alert('navigator get credential failed');
+                alert(err)
                 this.email = '';
                 this.password = '';
             })
