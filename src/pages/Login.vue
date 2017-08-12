@@ -85,6 +85,7 @@ export default {
             }
             requestLogin({ email: this.email, password: this.password }).then((loginedInUser) => {
                 // let userInfo = loginedInUser.toJSON();
+                console.log(loginedInUser);
                 if (navigator.credentials) {
                     let cred = new PasswordCredential({
                         id: this.email,
@@ -120,27 +121,31 @@ export default {
             actions: []
         });
         this.hideBottomNav();
-    },
-    mounted:function() {
         if (navigator.credentials) {
             navigator.credentials.get({
                 password: true
             }).then((cred) => {
                 console.log('navigator get credential success');
                 console.log(cred);
-                alert('navigator get credential success');
-                alert(JSON.stringify(cred.id + ":" + cred.password));
-                if (!cred) {
+                // alert('navigator get credential success');
+                // alert(JSON.stringify(cred.id + ":" + cred.password));
+                if (!cred  || cred.type !== 'password') {
                     return;
                 }
-                this.email = cred.id;
-                this.password = cred.password;
-                this.login();
+                // this.email = cred.id;
+                // this.password = cred.password;
+                requestLogin({ email: cred.id, password: cred.password }).then((loginedInUser) => {
+                    // 登录成功，存储用户信息
+                    console.log('user login passed from cred, going to todo page');
+                    console.log(loginedInUser);
+                    this.setUserInfo(loginedInUser);
+                    this.$router.push({name:'list'});
+                })
             }, (err) => {
                 console.log('navigator get credential failed');
                 console.log(err);
-                alert('navigator get credential failed');
-                alert(err)
+                // alert('navigator get credential failed');
+                // alert(err)
                 this.email = '';
                 this.password = '';
             })
