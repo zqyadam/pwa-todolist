@@ -63,6 +63,7 @@ export default {
         
     },
     activated: function() {
+        console.log('activating page');
         this.setAppHeader({
             title: '待办事项',
             show: true,
@@ -77,7 +78,7 @@ export default {
         });
         this.showBottomNav();
     },
-    created:function() {
+    mounted:function() {
     	 EventBus.$on('app-bottom-navigator:click-nav', (eventData) => {
             console.log(eventData);
             if (eventData.name === 'done') {

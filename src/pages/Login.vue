@@ -42,8 +42,8 @@ export default {
     name: 'login',
     data() {
         return {
-            email: '',
-            password: '',
+            email: 'test@test.com',
+            password: '111111',
             eye: false,
         }
     },
@@ -99,20 +99,19 @@ export default {
 
         }
     },
-    created: function() {
-        this.setAppHeader({
-            title: 'Todo List',
-            show: true,
-            showMenu: false,
-            showBack: false,
-            showLogo: false,
-            actions: []
-        });
-        this.hideBottomNav();
-    },
     mounted:function() {
         if (isLogedin()) {
             this.$router.push({name:'list'});
+        }else{
+            this.setAppHeader({
+                title: 'Todo List',
+                show: true,
+                showMenu: false,
+                showBack: false,
+                showLogo: false,
+                actions: []
+            });
+            this.hideBottomNav();
         }
     }
 }

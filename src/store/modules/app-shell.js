@@ -12,7 +12,7 @@ let state = {
      *
      * @type {boolean}
      */
-    needPageTransition: false,
+    needPageTransition: true,
 
     /**
      * 多个页面是否处于切换中
