@@ -127,7 +127,7 @@ export default {
             }).then((cred) => {
                 console.log('navigator get credential success');
                 console.log(cred);
-                // alert('navigator get credential success');
+                alert('navigator get credential success');
                 // alert(JSON.stringify(cred.id + ":" + cred.password));
                 if (!cred  || cred.type !== 'password') {
                     return;
@@ -140,6 +140,8 @@ export default {
                     console.log(loginedInUser);
                     this.setUserInfo(loginedInUser);
                     this.$router.push({name:'list'});
+                },(err)=>{
+                    this.showSnackbar({type:'error', msg:codeToMessage(err.code)});
                 })
             }, (err) => {
                 console.log('navigator get credential failed');
