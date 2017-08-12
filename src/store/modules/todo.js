@@ -8,7 +8,7 @@ function filterTodos(state, type) {
     return state.todos ? {
         done: [...state.todos.values()].filter(todo => ((todo.get('type') === type) && (todo.get('status') === true))),
         undone: [...state.todos.values()].filter(todo => ((todo.get('type') === type) && (todo.get('status') === false))),
-    } : {}
+    } : {};
 }
 
 
@@ -68,10 +68,8 @@ let mutations = {
         }
     },
     [types.SET_TODO_STATUS](state, changedTodo) {
-    	console.log(changedTodo);
         let todos = new Map(state.todos.entries());
         todos.set(changedTodo.id, changedTodo);
-        console.log(todos === state.todos);
         state.todos = todos;
     }
 };

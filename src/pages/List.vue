@@ -14,66 +14,6 @@
                  <v-flex xs12 lg3>
                     <ListBlock title="不重要-不紧急" :data="done ? NotImpNotEmg.done : NotImpNotEmg.undone" color="accent" :done="done"></ListBlock>
                 </v-flex>
-                <!-- <v-flex xs12 lg3>
-                    <v-card flat tile>
-                        <v-card-title class="light-green--text">
-                            重要-不紧急
-                        </v-card-title>
-                        <v-card-text class="pa-0">
-                            <v-container fluid class="pa-0 pl-3" v-for="todo in todos" :key="todo.text">
-                                <v-layout>
-                                    <v-flex xs1 class="pa-0">
-                                        <v-checkbox v-model="todo.done" color="light-green" dark class="pa-1" hide-details></v-checkbox>
-                                    </v-flex>
-                                    <v-flex xs11 class="pa-0 pr-2">
-                                        <p class="list" v-html="todo.text"></p>
-                                    </v-flex>
-                                </v-layout>
-                            </v-container>
-                        </v-card-text>
-                    </v-card>
-                    <v-divider></v-divider>
-                </v-flex>
-                <v-flex xs12 lg3>
-                    <v-card flat tile>
-                        <v-card-title class="orange--text">
-                            不重要-紧急
-                        </v-card-title>
-                        <v-card-text class="pa-0">
-                            <v-container fluid class="pa-0 pl-3"  v-for="todo in todos" :key="todo.text">
-                                <v-layout>
-                                    <v-flex xs1 class="pa-0">
-                                        <v-checkbox v-model="todo.done" color="orange" dark class="pa-1" hide-details></v-checkbox>
-                                    </v-flex>
-                                    <v-flex xs11 class="pa-0 pr-2">
-                                        <p class="list" v-html="todo.text"></p>
-                                    </v-flex>
-                                </v-layout>
-                            </v-container>
-                        </v-card-text>
-                    </v-card>
-                    <v-divider></v-divider>
-                </v-flex>
-                <v-flex xs12 lg3>
-                    <v-card flat tile>
-                        <v-card-title class="light-blue--text text--accent-4">
-                            不重要-不紧急
-                        </v-card-title>
-                        <v-card-text class="pa-0">
-                            <v-container fluid class="pa-0 pl-3" v-for="todo in todos" :key="todo.text" >
-                                <v-layout>
-                                    <v-flex xs1 class="pa-0">
-                                        <v-checkbox v-model="todo.done" color="light-blue accent-4" dark class="pa-1" hide-details></v-checkbox>
-                                    </v-flex>
-                                    <v-flex xs11 class="pa-0 pr-2">
-                                        <p class="list" v-html="todo.text"></p>
-                                    </v-flex>
-                                </v-layout>
-                            </v-container>
-                        </v-card-text>
-                    </v-card>
-                    <v-divider></v-divider>
-                </v-flex> -->
             </v-layout>
         </v-container>
     </div>
@@ -126,8 +66,8 @@ export default {
         this.setAppHeader({
             title: '待办事项',
             show: true,
-            showMenu: false,
-            showBack: true,
+            showMenu: true,
+            showBack: false,
             actions: [{
                 icon: 'add',
                 route: {

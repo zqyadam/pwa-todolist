@@ -36,7 +36,7 @@
 import { mapActions } from 'vuex';
 import { emailCheck, clearSpace } from '../common/common.js'
 
-import { requestLogin, codeToMessage } from '@/common/api.js'
+import { requestLogin, codeToMessage, isLogedin } from '@/common/api.js'
 
 export default {
     name: 'login',
@@ -48,6 +48,9 @@ export default {
         }
     },
     methods: {
+        ...mapActions('appShell',[
+            'disablePageTransition'
+        ]),
         ...mapActions('appShell/appHeader', [
             'setAppHeader'
         ]),
@@ -57,9 +60,9 @@ export default {
         ...mapActions('appShell/appSnackbar', [
             'showSnackbar',
         ]),
-        ...mapActions('user', [
-            'setUserInfo'
-        ]),
+        // ...mapActions('user', [
+        //     'setUserInfo'
+        // ]),
         checkPassword: function() {
             this.password = clearSpace(this.password);
             if (!this.password) {
@@ -84,29 +87,14 @@ export default {
                 return '';
             }
             requestLogin({ email: this.email, password: this.password }).then((loginedInUser) => {
-                // let userInfo = loginedInUser.toJSON();
+
+                console.log('user login passed, going to todo page');
                 console.log(loginedInUser);
-                if (navigator.credentials) {
-                    let cred = new PasswordCredential({
-                        id: this.email,
-                        password: this.password,
-                    })
-                    return navigator.credentials.store(cred).then(() => {
-                        console.log('navigator store success');
-                        // return cred;
-                        return Promise.resolve(loginedInUser)
-                    })
-                }
-                return Promise.resolve(loginedInUser)
+                this.$router.push({name:'list'})
+
             }, (err) => {
                 this.showSnackbar({type:'error', msg:codeToMessage(err.code)});
                 return Promise.reject(err);
-            }).then((loginedData) => {
-            	// 登录成功，存储用户信息
-                console.log('user login passed, going to todo page');
-                console.log(loginedData);
-                this.setUserInfo(loginedData);
-                this.$router.push({name:'list'})
             })
 
         }
@@ -121,36 +109,10 @@ export default {
             actions: []
         });
         this.hideBottomNav();
-        if (navigator.credentials) {
-            navigator.credentials.get({
-                password: true
-            }).then((cred) => {
-                console.log('navigator get credential success');
-                console.log(cred);
-                alert('navigator get credential success');
-                // alert(JSON.stringify(cred.id + ":" + cred.password));
-                if (!cred  || cred.type !== 'password') {
-                    return;
-                }
-                // this.email = cred.id;
-                // this.password = cred.password;
-                requestLogin({ email: this.email, password: this.password }).then((loginedInUser) => {
-                    // 登录成功，存储用户信息
-                    console.log('user login passed from cred, going to todo page');
-                    console.log(loginedInUser);
-                    this.setUserInfo(loginedInUser);
-                    this.$router.push({name:'list'});
-                },(err)=>{
-                    this.showSnackbar({type:'error', msg:codeToMessage(err.code)});
-                })
-            }, (err) => {
-                console.log('navigator get credential failed');
-                console.log(err);
-                // alert('navigator get credential failed');
-                // alert(err)
-                this.email = '';
-                this.password = '';
-            })
+    },
+    mounted:function() {
+        if (isLogedin()) {
+            this.$router.push({name:'list'});
         }
     }
 }

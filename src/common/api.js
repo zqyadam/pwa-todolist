@@ -14,11 +14,7 @@ export let requestLogin = function(loginParams) {
     return AV.User.logIn(loginParams.email, loginParams.password);
 }
 export let isLogedin = function(currentUser) {
-    // console.log('currentUser:');
-    // console.log(currentUser);
-    // console.log(AV.User.current());
-    // console.log(currentUser === AV.User.current());
-    return currentUser === AV.User.current();
+    return AV.User.current() ? true : false;
 }
 export let getCurrentUser = function() {
     return AV.User.current();

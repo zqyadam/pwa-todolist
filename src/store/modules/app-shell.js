@@ -12,7 +12,7 @@ let state = {
      *
      * @type {boolean}
      */
-    needPageTransition: true,
+    needPageTransition: false,
 
     /**
      * 多个页面是否处于切换中
@@ -44,7 +44,7 @@ let actions = {
      * @param {Function} commit commit
      */
     enablePageTransition({commit}) {
-        commit(types.ENABLE_PAGE_TRANSITION, true);
+        commit(types.ENABLE_PAGE_TRANSITION);
     },
 
     /**
@@ -53,7 +53,7 @@ let actions = {
      * @param {Function} commit commit
      */
     disablePageTransition({commit}) {
-        commit(types.DISABLE_PAGE_TRANSITION, false);
+        commit(types.DISABLE_PAGE_TRANSITION);
     },
 
     /**
@@ -87,6 +87,12 @@ let mutations = {
     },
     [types.SAVE_SCROLLTOP](state, {path, scrollTop}) {
         state.historyPageScrollTop[path] = scrollTop;
+    },
+    [types.DISABLE_PAGE_TRANSITION](state){
+        state.needPageTransition = false;
+    },
+    [types.ENABLE_PAGE_TRANSITION](state){
+        state.needPageTransition = true;
     }
 };
 

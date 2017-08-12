@@ -6,7 +6,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import appShell from './modules/app-shell';
-import user from './modules/user';
+// import user from './modules/user';
 import todo from './modules/todo';
 
 
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
 export default new Vuex.Store({
     modules: {
         appShell,
-        user,
+        // user,
         todo
     }
 });

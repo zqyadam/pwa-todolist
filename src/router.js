@@ -19,7 +19,8 @@ let List = () =>
 // let Detail = () => import('@/pages/Detail.vue');
 let NotFound = () =>
     import ('@/pages/NotFound.vue');
-let Edit = ()=>import('@/pages/Edit.vue')
+let Edit = () =>
+    import ('@/pages/Edit.vue')
 // let User = () => import('@/pages/User.vue');
 // let Search = () => import('@/pages/Search.vue');
 
@@ -56,11 +57,11 @@ export function createRouter() {
                 }
             },
             {
-                path:'/edit/:id',
-                name:'edit',
-                component:Edit, 
-                meta:{
-                    requiresAuth:true
+                path: '/edit/:id',
+                name: 'edit',
+                component: Edit,
+                meta: {
+                    requiresAuth: true
                 }
             },
             // {
@@ -87,9 +88,9 @@ export function createRouter() {
                 component: NotFound
             },
             {
-                path:'*',
-                redirect:{
-                    name:'notFound'
+                path: '*',
+                redirect: {
+                    name: 'notFound'
                 }
             }
         ]
@@ -112,36 +113,32 @@ export function createRouter() {
     const SLIDE_RIGHT = 'slide-right';
 
     router.beforeEach((to, from, next) => {
+        if (router.app.$store) {
+            // 如果不需要切换动画，直接返回
+            if (router.app.$store.state.appShell.needPageTransition) {
+
+                // 判断当前是前进还是后退，添加不同的动画效果
+                let pageTransitionName = isForward(to, from) ? SLIDE_LEFT : SLIDE_RIGHT;
+                router.app.$store.commit(`appShell/${types.SET_PAGE_TRANSITION_NAME}`, { pageTransitionName });
+            }
+        }
 
         if (to.matched.some(record => record.meta.requiresAuth)) {
             // 所访问的页面需要权限验证
-            if (router.app.$store) {
-                // 如果不需要切换动画，直接返回
-                if (router.app.$store.state.appShell.needPageTransition) {
 
-                    // 判断当前是前进还是后退，添加不同的动画效果
-                    let pageTransitionName = isForward(to, from) ? SLIDE_LEFT : SLIDE_RIGHT;
-                    router.app.$store.commit(`appShell/${types.SET_PAGE_TRANSITION_NAME}`, { pageTransitionName });
-                }
-                // 判断是否已经登录
-                if (!isLogedin(router.app.$store.state.user.currentUser)) {
-                    // 没有登录则跳转至登录页面
-                    next({
-                        name:'home'
-                    });
-                }
-
-            } else {
-                // router.app.$store中没有值，则说明是第一次访问，直接跳转登录页面
-                console.log('first visit');
+            // 判断是否已经登录
+            if (!isLogedin()) {
+                // 没有登录则跳转至登录页面
                 next({
-                    name:'home'
+                    name: 'home'
                 });
+                return
             }
+
         }
         // 所访问的页面不需要权限验证
         next();
-       
+
     });
 
     return router;
