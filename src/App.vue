@@ -116,7 +116,12 @@ export default {
     }
 };
 </script>
-
+<style scoped>
+.b{
+    border: 1px solid red;
+    height: 100%;
+}
+</style>
 <style lang="stylus">
 
 @import './assets/styles/global'

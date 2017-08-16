@@ -50,14 +50,11 @@ export default {
             showMenu: false,
             showBack: true,
             showLogo: false,
-            actions: [
-                {
-                    icon: 'home',
-                    route: {
-                        name: 'home'
-                    }
-                }
-            ]
+            actions: [{
+                icon : 'check_box_outline_blank'
+            },{
+                icon : 'edit'
+            }]
         });
         this.hideBottomNav();
     }

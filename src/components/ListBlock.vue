@@ -5,24 +5,28 @@
                 {{ title }} ({{ data.length }})
             </v-card-title>
             <v-card-text class="pa-0">
-                <v-touch @swipeleft="setTodoUnDone(todo)" @press="deleteTodo(todo)" @swiperight="setTodoDone(todo)" @tap="editTodo(todo)" @panright="!todo.get('status') && onPanStart(todo.id)" @panleft="todo.get('status') && onPanStart(todo.id)" @panend="onPanEnd(todo.id)" v-for="todo in data" :key="todo.id" :options="{ touchAction: 'pan-y' }" :swipe-options="{velocity:0.2,threshold:5}" >
-                    <v-container fluid class="pa-0 pl-3" :ref="'list-'+todo.id" >
-                        <v-layout>
-                            <v-flex xs1 class="pa-0">
-                                <v-btn icon dark block class="pa-0 ma-0" :class="[ color + '--text']" @click.native="toggleTodoStatus(todo)">
-                                    <v-icon> {{ todo.get('status') ? 'check_box' : 'check_box_outline_blank' }} </v-icon>
-                                </v-btn>
-                            </v-flex>
-                            <v-flex xs11 class="pa-0 pr-2 pt-2">
-                                <p class="list-content" v-html="todo.get('content')"></p>
+                <v-container fluid class="pa-0 pl-3 pr-3" v-for="todo in data" :key="todo.id" :ref="'list-'+todo.id">
+                    <v-layout>
+                        <v-flex xs1 class="pa-0">
+                            <v-btn icon dark block class="pa-0 ma-0" :class="[ color + '--text']" @click.native="toggleTodoStatus(todo)">
+                                <v-icon> {{ todo.get('status') ? 'check_box' : 'check_box_outline_blank' }} </v-icon>
+                            </v-btn>
+                        </v-flex>
+                        <v-flex xs10 class="pa-0 pr-2 pt-2" :class="">
+                            <v-touch @swipeleft="todo.get('status') && setTodoUnDone(todo) " @swiperight="setTodoDone(todo)" @press="deleteTodo(todo)" @tap="readTodoDetail(todo)" @panright="onPanRightStart(todo)" @panleft="onPanLeftStart(todo)" @panend="onPanEnd(todo)" :options="{ touchAction: 'pan-y' }" :swipe-options="{velocity:0.2,threshold:5}">
+                                <p class="list-content" :class="{ del : todo.get('status') }" v-html="todo.get('content')"></p>
                                 <span class="list-time">更新时间： {{ getUpdatedTime(todo) }}</span>
-                            </v-flex>
-                        </v-layout>
-                    </v-container>
-                </v-touch>
+                            </v-touch>
+                        </v-flex>
+                        <v-flex xs1 class="pa-0">
+                            <v-btn icon class="pa-0 ma-0" @click.native="editTodo(todo)">
+                                <v-icon>edit</v-icon>
+                            </v-btn>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
             </v-card-text>
         </v-card>
-        <v-divider></v-divider>
     </div>
 </template>
 <script>
@@ -33,7 +37,7 @@ import { mapActions } from 'vuex';
 export default {
     data() {
         return {
-        	
+
         }
     },
     props: {
@@ -50,7 +54,7 @@ export default {
             type: Array
         },
         // done:{
-        // 	type:Boolean
+        //  type:Boolean
         // }
     },
     methods: {
@@ -60,37 +64,40 @@ export default {
         onSwipeUp: function() {
             console.log('onSwipeUp');
         },
-        onPanStart: function(id) {
-            console.log('onPanStart');
-            console.log(this.$refs['list-'+id]);
-            console.log("2px "+ this.color +" solid");
-            this.$refs['list-'+id][0].style.border = "1px dashed rgba(0,0,0,0.2)";
-            this.$refs['list-'+id][0].style.fontWeight = "bold";
+        onPanRightStart: function(todo) {
+            console.log('onPanRightStart');
+            if (!todo.get('status')) {
+                this.$refs['list-' + todo.id][0].style.border = "1px dashed rgba(0,0,0,0.2)";
+                this.$refs['list-' + todo.id][0].style.fontWeight = "bold";
+            }
         },
-        onPanEnd: function(id) {
+        onPanLeftStart: function(todo) {
+            if (todo.get('status')) {
+                this.$refs['list-' + todo.id][0].style.border = "1px dashed rgba(0,0,0,0.2)";
+            }
+            // else {
+            //     this.$refs['list-' + todo.id][0].style.borderBottom = "1px dashed rgba(0,0,0,0.4)";
+            // }
+            this.$refs['list-' + todo.id][0].style.fontWeight = "bold";
+        },
+        onPanEnd: function(todo) {
             console.log('panend');
-            this.$refs['list-'+id][0].style.border="";
-            this.$refs['list-'+id][0].style.fontWeight = "";
-        },
-        onSwipeLeft: function(todo) {
-            console.log('swipeleft:');
-            console.log(todo);
-            // this.$router.push({
-            //     name:'edit',
-            //     params: {
-            //         id: todo.id
-            //     }
-            // })
+            this.$refs['list-' + todo.id][0].style.border = "";
+            this.$refs['list-' + todo.id][0].style.fontWeight = "";
         },
         editTodo: function(todo) {
             console.log('edit todo');
-            console.log(todo);
-            // this.$router.push({
-            //     name:'edit',
-            //     params: {
-            //         id: todo.id
-            //     }
-            // })
+            console.log(todo.id);
+            this.$router.push({
+                name: 'edit',
+                params: {
+                    type: 'edit',
+                    id: todo.id
+                }
+            })
+        },
+        readTodoDetail: function(todo) {
+            console.log('read todo detail');
         },
         toggleTodoStatus: function(todo) {
             this.setTodoStatus({
@@ -106,8 +113,8 @@ export default {
                 })
             }
         },
-        setTodoUnDone:function(todo) {
-        	if (todo.get('status')) {
+        setTodoUnDone: function(todo) {
+            if (todo.get('status')) {
                 this.setTodoStatus({
                     id: todo.id,
                     status: false
@@ -146,7 +153,13 @@ export default {
     display: block;
 }
 
-.swipeRight{
-	border: 1px solid red;
+.swipeRight {
+    border: 1px solid red;
 }
+
+.del {
+    text-decoration: line-through;
+    color: #888;
+}
+
 </style>

@@ -1,36 +1,34 @@
 <template>
-    <div>
-        <v-container>
-            <v-layout justify-center>
-                <v-flex xs8 lg3 mb-4>
-                    <img src="../assets/img/todolist1.png" alt="logo">
-                </v-flex>
-            </v-layout>
-            <v-layout justify-center>
-                <v-flex xs8 lg4>
-                    <v-text-field prepend-icon="email" name="email" label="邮箱" id="email" v-model.trim="email" required :rules="[checkEmail]"></v-text-field>
-                </v-flex>
-            </v-layout>
-            <v-layout justify-center>
-                <v-flex xs8 lg4>
-                    <v-text-field prepend-icon="lock" v-model.trim="password" :type="eye ? 'text' : 'password' " name="input-1" label="密码" id="password" required counter :append-icon="eye ? 'visibility' : 'visibility_off'" :append-icon-cb="function(){eye = !eye}" :rules="[checkPassword]"></v-text-field>
-                </v-flex>
-            </v-layout>
-            <v-layout justify-center>
-                <v-flex xs6 lg3>
-                    <v-btn primary light block @click.native="login">登录</v-btn>
-                </v-flex>
-            </v-layout>
-            <v-layout>
-                <v-flex xs8 offset-xs2>
-                    <p>
-                        还没有账号？注册一个吧~
-                        <v-btn error flat small :to="{name:'register'}" router>立即注册</v-btn>
-                    </p>
-                </v-flex>
-            </v-layout>
-        </v-container>
-    </div>
+    <v-container>
+        <v-layout justify-center>
+            <v-flex xs8 lg3 mb-4>
+                <img src="../assets/img/todolist1.png" alt="logo">
+            </v-flex>
+        </v-layout>
+        <v-layout justify-center>
+            <v-flex xs8 lg4>
+                <v-text-field prepend-icon="email" name="email" label="邮箱" id="email" v-model.trim="email" required :rules="[checkEmail]"></v-text-field>
+            </v-flex>
+        </v-layout>
+        <v-layout justify-center>
+            <v-flex xs8 lg4>
+                <v-text-field prepend-icon="lock" v-model.trim="password" :type="eye ? 'text' : 'password' " name="input-1" label="密码" id="password" required counter :append-icon="eye ? 'visibility' : 'visibility_off'" :append-icon-cb="function(){eye = !eye}" :rules="[checkPassword]"></v-text-field>
+            </v-flex>
+        </v-layout>
+        <v-layout justify-center>
+            <v-flex xs6 lg3>
+                <v-btn primary light block @click.native="login">登录</v-btn>
+            </v-flex>
+        </v-layout>
+        <v-layout>
+            <v-flex xs8 offset-xs2>
+                <p>
+                    还没有账号？注册一个吧~
+                    <v-btn error flat small :to="{name:'register'}" router>立即注册</v-btn>
+                </p>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 <script>
 import { mapActions } from 'vuex';
@@ -48,7 +46,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('appShell',[
+        ...mapActions('appShell', [
             'disablePageTransition'
         ]),
         ...mapActions('appShell/appHeader', [
@@ -90,19 +88,19 @@ export default {
 
                 console.log('user login passed, going to todo page');
                 console.log(loginedInUser);
-                this.$router.push({name:'list'})
+                this.$router.push({ name: 'list' })
 
             }, (err) => {
-                this.showSnackbar({type:'error', msg:codeToMessage(err.code)});
+                this.showSnackbar({ type: 'error', msg: codeToMessage(err.code) });
                 return Promise.reject(err);
             })
 
         }
     },
-    mounted:function() {
+    mounted: function() {
         if (isLogedin()) {
-            this.$router.push({name:'list'});
-        }else{
+            this.$router.push({ name: 'list' });
+        } else {
             this.setAppHeader({
                 title: 'Todo List',
                 show: true,

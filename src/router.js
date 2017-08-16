@@ -57,11 +57,12 @@ export function createRouter() {
                 }
             },
             {
-                path: '/edit/:id',
+                path: '/edit/:type/:id',
                 name: 'edit',
                 component: Edit,
                 meta: {
-                    requiresAuth: true
+                    requiresAuth: true,
+                    notKeepAlive: true
                 }
             },
             // {

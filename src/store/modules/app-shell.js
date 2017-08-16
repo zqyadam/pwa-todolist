@@ -150,6 +150,13 @@ export default {
                 showBack: false,
 
                 /**
+                 * 返回时是否暂时确认对话框
+                 *
+                 * @type {boolean}
+                 */
+                needBackConfirm: false,
+
+                /**
                  * 是否展示左侧logo
                  *
                  * @type {boolean}
@@ -287,7 +294,7 @@ export default {
                  */
                 navs: [
                     {
-                        // 按钮的名字
+                         // 按钮的名字
                         name: 'undone',
 
                         // 显示的 icon
@@ -304,6 +311,7 @@ export default {
                         //     name: 'home',
                         //     path: '/'
                         // }
+                        
                     },
                     {
                         // 按钮的名字
@@ -361,6 +369,16 @@ export default {
                  */
                 activateBottomNav({commit}, name) {
                     commit(types.ACTIVATE_APP_BOTTOM_NAV, name);
+                },
+
+
+                /**
+                 * 重置底部导航为默认设置
+                 *
+                 * @param {Function} commit commit
+                 */
+                resetBottomNav({commit}){
+                    commit(types.SET_APP_BOTTOM_NAV, {navs: state.appBottomNavigator.defaultNavs});
                 }
             },
             mutations: {

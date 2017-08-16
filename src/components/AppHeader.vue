@@ -12,7 +12,7 @@
                 <v-btn
                     icon
                     v-if="showBack"
-                    @click.native="handleClick('back')" light>
+                    @click.native="handleClick('back',{$event})" light>
                     <v-icon class="app-header-icon">arrow_back</v-icon>
                 </v-btn>
                 <div v-if="showLogo" @click="handleClick('logo')">
@@ -54,6 +54,7 @@ export default {
             'show',
             'showMenu',
             'showBack',
+            'needBackConfirm',
             'showLogo',
             'logoIcon',
             'title',
@@ -74,7 +75,7 @@ export default {
          * @param {string} source 点击事件源名称 menu/logo/action
          * @param {Object} data 随点击事件附带的数据对象
          */
-        handleClick(source, {actionIdx, route} = {}) {
+        handleClick(source, {actionIdx, route, $event} = {}) {
 
             // 页面正在切换中，不允许操作，防止滑动效果进行中切换
             if (this.isPageSwitching) {
@@ -87,11 +88,24 @@ export default {
                 eventData.actionIdx = actionIdx;
             }
 
+
+            if (source === 'back') {
+                if (this.needBackConfirm) {
+                    // 发送全局事件，便于非父子关系的路由组件监听
+                    $event.stopPropagation();
+                    EventBus.$emit(`app-header:click-${source}`, eventData);
+                }else{
+                    // 发送给父组件，内部处理
+                    this.$emit(`click-${source}`, eventData);
+                }
+                return 
+            }
+
             // 发送给父组件，内部处理
             this.$emit(`click-${source}`, eventData);
-
             // 发送全局事件，便于非父子关系的路由组件监听
             EventBus.$emit(`app-header:click-${source}`, eventData);
+            
 
             // 如果传递了路由对象，进入路由
             if (route) {

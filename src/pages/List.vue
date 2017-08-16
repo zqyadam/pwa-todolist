@@ -1,22 +1,20 @@
 <template>
-    <div>
-        <v-container fluid class="pa-0">
-            <v-layout justify-center wrap class="scroll">
-                <v-flex xs12 lg3>
-                    <ListBlock title="重要-紧急" :data="done ? ImpEmg.done : ImpEmg.undone" color="red"></ListBlock>
-                </v-flex>
-                 <v-flex xs12 lg3>
-                    <ListBlock title="重要-不紧急" :data="done ? ImpNotEmg.done : ImpNotEmg.undone" color="green"></ListBlock>
-                </v-flex>
-                 <v-flex xs12 lg3>
-                    <ListBlock title="不重要-紧急" :data="done ? NotImpEmg.done : NotImpEmg.undone" color="orange"></ListBlock>
-                </v-flex>
-                 <v-flex xs12 lg3>
-                    <ListBlock title="不重要-不紧急" :data="done ? NotImpNotEmg.done : NotImpNotEmg.undone" color="blue"></ListBlock>
-                </v-flex>
-            </v-layout>
-        </v-container>
-    </div>
+    <v-container fluid class="pa-0">
+        <v-layout justify-center wrap class="scroll">
+            <v-flex xs12 lg3>
+                <ListBlock title="重要-紧急" :data="done ? ImpEmg.done : ImpEmg.undone" color="red"></ListBlock>
+            </v-flex>
+             <v-flex xs12 lg3>
+                <ListBlock title="重要-不紧急" :data="done ? ImpNotEmg.done : ImpNotEmg.undone" color="green"></ListBlock>
+            </v-flex>
+             <v-flex xs12 lg3>
+                <ListBlock title="不重要-紧急" :data="done ? NotImpEmg.done : NotImpEmg.undone" color="orange"></ListBlock>
+            </v-flex>
+             <v-flex xs12 lg3>
+                <ListBlock title="不重要-不紧急" :data="done ? NotImpNotEmg.done : NotImpNotEmg.undone" color="blue"></ListBlock>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 <script>
 import ListBlock from '@/components/ListBlock'
@@ -72,15 +70,18 @@ export default {
             actions: [{
                 icon: 'add',
                 route: {
-                    path: '/edit'
+                    name: 'edit',
+                    params:{
+                        type:'add',
+                        id:''
+                    }
                 }
             }]
         });
         this.showBottomNav();
     },
-    mounted:function() {
+    created:function() {
     	 EventBus.$on('app-bottom-navigator:click-nav', (eventData) => {
-            console.log(eventData);
             if (eventData.name === 'done') {
                 this.done = true;
             } else {
