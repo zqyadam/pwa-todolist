@@ -18,31 +18,6 @@
                         <v-icon v-else-if="nav.icon" class="app-header-icon">{{ nav.icon }}</v-icon>
                     </v-btn>
                 </v-bottom-nav>
-                <!-- 
-                <v-bottom-nav absolute value="true" :class="{
-                    'red': type === 'ImpEmg',
-                    'green': type === 'ImpNotEmg',
-                    'orange': type === 'NotImpEmg',
-                    'blue': type === 'NotImpNotEmg'
-                  }">
-                    <v-btn dark @click.native="type = 'ImpEmg'" :value="type === 'ImpEmg'">
-                        <span>重要紧急</span>
-                        <v-icon v-show="type === 'ImpEmg'">check_circle</v-icon>
-                    </v-btn>
-                    <v-btn dark @click.native="type = 'ImpNotEmg'" :value="type === 'ImpNotEmg'">
-                        <span>重要不紧急</span>
-                        <v-icon v-show="type === 'ImpNotEmg'">check_circle</v-icon>
-                    </v-btn>
-                    <v-btn dark @click.native="type = 'NotImpEmg'" :value="type === 'NotImpEmg'">
-                        <span>不重要紧急</span>
-                        <v-icon v-show="type === 'NotImpEmg'">check_circle</v-icon>
-                    </v-btn>
-                    <v-btn dark @click.native="type = 'NotImpNotEmg'" :value="type === 'NotImpNotEmg'">
-                        <span>不重要不紧急</span>
-                        <v-icon v-show="type === 'NotImpNotEmg'">check_circle</v-icon>
-                    </v-btn>
-                </v-bottom-nav>
-                 -->
             </slot>
         </footer>
     </transition>

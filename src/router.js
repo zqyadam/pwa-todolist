@@ -16,7 +16,7 @@ let Register = () =>
     import ('@/pages/Register.vue');
 let List = () =>
     import ('@/pages/List.vue');
-// let Detail = () => import('@/pages/Detail.vue');
+let Detail = () => import('@/pages/Detail.vue');
 let NotFound = () =>
     import ('@/pages/NotFound.vue');
 let Edit = () =>
@@ -65,14 +65,14 @@ export function createRouter() {
                     notKeepAlive: true
                 }
             },
-            // {
-            //     path: '/detail/:id',
-            //     name: 'detail',
-            //     component: Detail,
-            //     meta: {
-            //         notKeepAlive: true
-            //     }
-            // },
+            {
+                path: '/detail/:id',
+                name: 'detail',
+                component: Detail,
+                meta: {
+                    requiresAuth: true,
+                }
+            },
             // {
             //     path: '/user',
             //     name: 'user',

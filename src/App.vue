@@ -137,7 +137,15 @@ body
     text-align center
     color #2c3e50
 </style>
-
+<style>
+.v-app-shell {
+    padding-top: 52px;
+    padding-bottom: 56px;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+</style>
 <style lang="stylus" scoped>
 .app-shell
     position absolute

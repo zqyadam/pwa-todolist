@@ -3,7 +3,7 @@
         <div
             v-show="show"
             v-bind:class="[{'app-mask-show': show}, 'app-mask-wrapper']"
-            @click.stop="closeAppMask">
+            @click.stop="closeAppMask" key="mask">
         </div>
     </transition>
 </template>

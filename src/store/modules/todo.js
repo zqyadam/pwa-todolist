@@ -4,28 +4,28 @@ let state = {
     todos: new Map()
 }
 
-function filterTodos(state, type) {
-    return state.todos ? {
-        done: [...state.todos.values()].filter(todo => ((todo.get('type') === type) && (todo.get('status') === true))).sort((todo1, todo2) => {return todo2.updatedAt - todo1.updatedAt}),
-        undone: [...state.todos.values()].filter(todo => ((todo.get('type') === type) && (todo.get('status') === false))).sort((todo1, todo2) => {return todo2.updatedAt - todo1.updatedAt}),
-    } : {};
-}
+// function filterTodos(state, type) {
+//     return state.todos ? {
+//         done: [...state.todos.values()].filter(todo => ((todo.get('type') === type) && (todo.get('status') === true))).sort((todo1, todo2) => {return todo2.updatedAt - todo1.updatedAt}),
+//         undone: [...state.todos.values()].filter(todo => ((todo.get('type') === type) && (todo.get('status') === false))).sort((todo1, todo2) => {return todo2.updatedAt - todo1.updatedAt}),
+//     } : {};
+// }
 
 
-let getters = {
-    ImpEmg: function(state) {
-        return filterTodos(state, 'ImpEmg')
-    },
-    ImpNotEmg: function(state) {
-        return filterTodos(state, 'ImpNotEmg')
-    },
-    NotImpEmg: function(state) {
-        return filterTodos(state, 'NotImpEmg')
-    },
-    NotImpNotEmg: function(state) {
-        return filterTodos(state, 'NotImpNotEmg')
-    },
-}
+// let getters = {
+//     ImpEmg: function(state) {
+//         return filterTodos(state, 'ImpEmg')
+//     },
+//     ImpNotEmg: function(state) {
+//         return filterTodos(state, 'ImpNotEmg')
+//     },
+//     NotImpEmg: function(state) {
+//         return filterTodos(state, 'NotImpEmg')
+//     },
+//     NotImpNotEmg: function(state) {
+//         return filterTodos(state, 'NotImpNotEmg')
+//     },
+// }
 
 
 let actions = {
@@ -41,9 +41,17 @@ let actions = {
     setTodoStatus({ commit }, todoInfo) {
         let todo = state.todos.get(todoInfo.id);
         todo.set('status', todoInfo.status).save().then((changedTodo) => {
-            commit(types.SET_TODO_STATUS, changedTodo)
+            commit(types.SET_TODO, changedTodo);
         },(err)=>{
         	console.log(err);
+        })
+    },
+    setTodo({ commit }, todo){
+        return todo.save().then((changedTodo)=>{
+            commit(types.SET_TODO, changedTodo);
+            return changedTodo
+        },(err)=>{
+            console.log(err);
         })
     }
 }
@@ -67,7 +75,7 @@ let mutations = {
             state.todos.delete(todoID)
         }
     },
-    [types.SET_TODO_STATUS](state, changedTodo) {
+    [types.SET_TODO](state, changedTodo) {
         let todos = new Map(state.todos.entries());
         todos.set(changedTodo.id, changedTodo);
         state.todos = todos;
@@ -80,7 +88,7 @@ export default {
     namespaced: true,
     /* eslint-disable */
     actions,
-    getters,
+    // getters,
     mutations,
     state,
 }

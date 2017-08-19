@@ -1,6 +1,6 @@
 <template>
-    <v-app fill-height fixed-footer class="edit-shell">
-        <v-layout class="pa-2 fill-height" justify-center>
+    <v-app fill-height class="v-app-shell">
+        <v-layout class="pa-3 fill-height" justify-center>
             <v-text-field label="待办内容" class="input-group--focused fill-height edit-area" multi-line hide-details v-model="todoContent"></v-text-field>
         </v-layout>
         <v-layout row justify-center>
@@ -66,14 +66,27 @@ export default {
         ...mapActions('appShell/appBottomNavigator', [
             'hideBottomNav',
         ]),
-        saveChange: function(todo) {
-
+        ...mapActions('todo', [
+            'setTodo',
+        ]),
+        ...mapActions('appShell/appSnackbar', [
+            'showSnackbar',
+        ]),
+        saveChange: function() {
+            this.currentTodo.set('type',this.todoType);
+            this.currentTodo.set('content', this.todoContent);
+            this.setTodo(this.currentTodo).then((changedTodo)=>{
+                this.showSnackbar({ type: 'success', msg: '保存成功！' });
+                this.gotoList();
+            });
         },
         discardChange:function(todo) {
 
         },
         gotoList:function() {
-            this.$router.go(-1);
+            this.$router.push({
+                name:'list'
+            });
         }
     },
     computed: {
@@ -122,7 +135,7 @@ export default {
             console.log(eventData);
             switch (eventData.actionIdx) {
                 case 0:
-                    this.saveTodo();
+                    this.saveChange();
                     break;
                 default:
             }
@@ -149,13 +162,7 @@ export default {
     border: 1px solid green;
 }
 
-.edit-shell {
-    padding-top: 52px;
-    padding-bottom: 56px;
-    height: 100%;
-    width: 100%;
-    margin: 0;
-}
+
 
 .app-shell-footer {
     position: fixed;

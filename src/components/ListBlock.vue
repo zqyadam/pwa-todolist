@@ -98,6 +98,8 @@ export default {
         },
         readTodoDetail: function(todo) {
             console.log('read todo detail');
+            console.log(todo);
+            this.$emit('previewTodo',todo.id);
         },
         toggleTodoStatus: function(todo) {
             this.setTodoStatus({
