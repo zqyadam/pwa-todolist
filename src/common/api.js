@@ -43,6 +43,8 @@ export let AddTodoItem = function(item) {
     var todo = new Todo(item);
     todo.setACL(acl);
     todo.set('owner', getCurrentUser().id);
+    todo.set('status',false);
+    todo.set('enable', true);
     return todo.save();
 }
 

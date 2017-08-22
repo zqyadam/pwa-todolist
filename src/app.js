@@ -16,7 +16,6 @@ Vue.component('icon', Icon);
 var VueTouch = require('vue-touch')
 Vue.use(VueTouch, {name: 'v-touch'})
 
-let defaultNav = [{a:'a',b:'b'}]
 
 Vue.config.productionTip = false;
 

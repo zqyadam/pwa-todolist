@@ -1,4 +1,5 @@
 <template>
+    <div>
     <v-container>
         <v-layout justify-center>
             <v-flex xs8 lg3 mb-4>
@@ -17,7 +18,7 @@
         </v-layout>
         <v-layout justify-center>
             <v-flex xs6 lg3>
-                <v-btn primary light block @click.native="login">登录</v-btn>
+                <v-btn primary dark block @click.native="login">登录</v-btn>
             </v-flex>
         </v-layout>
         <v-layout>
@@ -29,6 +30,7 @@
             </v-flex>
         </v-layout>
     </v-container>
+    </div>
 </template>
 <script>
 import { mapActions } from 'vuex';

@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <div class="app-shell app-shell-bottom-navigation">
+        <div class="app-shell app-shell-bottom-navigation" >
             <app-header
                 class="app-shell-header"
                 @click-menu="handleClickHeaderMenu"
@@ -45,9 +45,9 @@
                 class="app-shell-footer"
                 @click-nav="handleClickBottomNav">
             </app-bottom-navigator>
-            <v-snackbar v-model="appSnackbar.show" :success="appSnackbar.type === 'success'" :error="appSnackbar.type === 'error'" :timeout="3000">
+            <v-snackbar top v-model="appSnackbar.show" :success="appSnackbar.type === 'success'" :error="appSnackbar.type === 'error'" :timeout="3000">
                 {{ appSnackbar.msg }}
-                <v-btn dark flat @click.native="hideSnackbar">关闭</v-btn>
+                <v-btn dark round outline class="white--text" @click.native="hideSnackbar">关闭</v-btn>
             </v-snackbar>
         </div>
     </div>
@@ -143,7 +143,7 @@ body
     padding-bottom: 56px;
     height: 100%;
     width: 100%;
-    margin: 0;
+    margin:0;
 }
 </style>
 <style lang="stylus" scoped>

@@ -3,21 +3,15 @@
         name="slide-down">
         <header class="app-header-wrapper" v-show="show">
             <div class="app-header-left">
-                <v-btn
-                    icon
-                    v-if="showMenu"
-                    @click.native="handleClick('menu')" light>
+                <v-btn icon v-if="showMenu" @click.native="handleClick('menu')" dark>
                     <v-icon class="app-header-icon">menu</v-icon>
                 </v-btn>
-                <v-btn
-                    icon
-                    v-if="showBack"
-                    @click.native="handleClick('back',{$event})" light>
+                <v-btn icon v-if="showBack" @click.native="handleClick('back',{$event})" light>
                     <v-icon class="app-header-icon">arrow_back</v-icon>
                 </v-btn>
                 <div v-if="showLogo" @click="handleClick('logo')">
                     <slot name="logo">
-                        <icon v-if="logoIcon" :name="logoIcon" class="app-header-icon" light></icon>
+                        <icon v-if="logoIcon" :name="logoIcon" class="app-header-icon"></icon>
                     </slot>
                 </div>
             </div>
@@ -27,13 +21,10 @@
                 </slot>
             </div>
             <div class="app-header-right">
-                <slot name="actions"
-                    v-for="action, actionIdx in actions"
+                <slot name="actions" v-for="action, actionIdx in actions"
                     :icon="action.icon"
                     :route="action.route">
-                    <v-btn
-                        icon="icon"
-                        @click.native="handleClick('action', {actionIdx, route: action.route})">
+                    <v-btn icon @click.native="handleClick('action', {actionIdx, route: action.route})">
                         <icon v-if="action.svg" :name="action.svg" class="app-header-icon"></icon>
                         <v-icon v-else-if="action.icon" class="app-header-icon">{{ action.icon }}</v-icon>
                     </v-btn>
@@ -145,7 +136,7 @@ $btn-color = #fff
 
     // 改变 icon 大小
     .app-header-icon
-        color $btn-color
+        color $btn-color !important
         width 20px
         height 20px
 

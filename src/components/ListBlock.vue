@@ -37,7 +37,7 @@ import { mapActions } from 'vuex';
 export default {
     data() {
         return {
-
+            panning:false
         }
     },
     props: {
@@ -53,37 +53,36 @@ export default {
             required: true,
             type: Array
         },
-        // done:{
-        //  type:Boolean
-        // }
     },
     methods: {
         ...mapActions('todo', [
             'setTodoStatus'
         ]),
-        onSwipeUp: function() {
-            console.log('onSwipeUp');
-        },
         onPanRightStart: function(todo) {
-            console.log('onPanRightStart');
-            if (!todo.get('status')) {
-                this.$refs['list-' + todo.id][0].style.border = "1px dashed rgba(0,0,0,0.2)";
-                this.$refs['list-' + todo.id][0].style.fontWeight = "bold";
+            if ( !this.panning ) {
+                console.log('onPanRightStart');
+                if (!todo.get('status')) {
+                    this.panning = true;
+                    this.$refs['list-' + todo.id][0].style.border = "1px dashed rgba(0,0,0,0.2)";
+                    this.$refs['list-' + todo.id][0].style.fontWeight = "bold";
+                }
             }
         },
         onPanLeftStart: function(todo) {
-            if (todo.get('status')) {
-                this.$refs['list-' + todo.id][0].style.border = "1px dashed rgba(0,0,0,0.2)";
+            if (!this.panning) {
+                console.log('panning left start');
+                if (todo.get('status')) {
+                    this.panning = true;
+                    this.$refs['list-' + todo.id][0].style.border = "1px dashed rgba(0,0,0,0.2)";
+                    this.$refs['list-' + todo.id][0].style.fontWeight = "bold";
+                }
             }
-            // else {
-            //     this.$refs['list-' + todo.id][0].style.borderBottom = "1px dashed rgba(0,0,0,0.4)";
-            // }
-            this.$refs['list-' + todo.id][0].style.fontWeight = "bold";
         },
         onPanEnd: function(todo) {
             console.log('panend');
             this.$refs['list-' + todo.id][0].style.border = "";
             this.$refs['list-' + todo.id][0].style.fontWeight = "";
+            this.panning = false;
         },
         editTodo: function(todo) {
             console.log('edit todo');
@@ -126,6 +125,9 @@ export default {
         getUpdatedTime: function(todo) {
             return new Date(todo.updatedAt).format("yyyy-MM-dd hh:mm:ss");
         },
+        deleteTodo:function(todo) {
+            this.$emit('deleteTodo',todo.id);
+        }
     },
     created: function() {
         Date.prototype.format = dateFormat;

@@ -33,10 +33,21 @@ let actions = {
         commit(types.INIT_TODO, todos);
     },
     addTodo({ commit }, todo) {
-        commit(types.ADD_TODO, todo);
+        // commit(types.ADD_TODO, todo);
+        commit(types.SET_TODO, todo);
     },
-    removeTodo({ commit }, todoID) {
-        commit(types.REMOVE_TODO, todoID)
+    deleteTodo({ commit, state }, todoID) {
+        console.log(state);
+        if ((state.todos instanceof Map) && todoID) {
+            let todo = state.todos.get(todoID);
+            return todo.set('enable',false).save().then((changedTodo)=>{
+                commit(types.REMOVE_TODO, changedTodo.id)
+                return changedTodo;
+            },(err)=>{
+                console.log(err);
+                return err
+            })
+        }
     },
     setTodoStatus({ commit }, todoInfo) {
         let todo = state.todos.get(todoInfo.id);
@@ -52,6 +63,7 @@ let actions = {
             return changedTodo
         },(err)=>{
             console.log(err);
+            return err
         })
     }
 }
@@ -72,13 +84,17 @@ let mutations = {
     },
     [types.REMOVE_TODO](state, todoID) {
         if ((state.todos instanceof Map) && state.todos.has(todoID)) {
-            state.todos.delete(todoID)
+            let todos = new Map(state.todos.entries());
+            todos.delete(todoID);
+            state.todos = todos;
         }
     },
-    [types.SET_TODO](state, changedTodo) {
-        let todos = new Map(state.todos.entries());
-        todos.set(changedTodo.id, changedTodo);
-        state.todos = todos;
+    [types.SET_TODO](state, todo) {
+        if ((state.todos instanceof Map) && todo.id) {
+            let todos = new Map(state.todos.entries());
+            todos.set(todo.id, todo);
+            state.todos = todos;
+        }
     }
 };
 

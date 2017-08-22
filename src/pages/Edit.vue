@@ -48,14 +48,15 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import EventBus from '@/event-bus';
+import { AddTodoItem, codeToMessage } from '@/common/api';
 
 export default {
     data() {
         return {
             todoType: 'ImpEmg',
-            todoContent:'',
+            todoContent: '',
             currentTodo: null,
-            pageType:'',
+            pageType: '',
             dialogShow: false
         }
     },
@@ -68,24 +69,45 @@ export default {
         ]),
         ...mapActions('todo', [
             'setTodo',
+            'addTodo'
         ]),
         ...mapActions('appShell/appSnackbar', [
             'showSnackbar',
         ]),
-        saveChange: function() {
-            this.currentTodo.set('type',this.todoType);
+        isContentChanged: function() {
+            return this.currentTodo.get('content') === this.todoContent;
+        },
+        saveTodoChange: function() {
+            this.currentTodo.set('type', this.todoType);
             this.currentTodo.set('content', this.todoContent);
-            this.setTodo(this.currentTodo).then((changedTodo)=>{
+            this.setTodo(this.currentTodo).then((changedTodo) => {
                 this.showSnackbar({ type: 'success', msg: '保存成功！' });
                 this.gotoList();
+            }, (err) => {
+                console.log(err);
             });
         },
-        discardChange:function(todo) {
+        discardTodoChange: function() {
 
         },
-        gotoList:function() {
+        createTodo: function() {
+            // 没有内容直接返回
+            if (!this.todoContent) {
+                this.showSnackbar({ type: 'error', msg: '写点什么吧~！' });
+                return
+            }
+
+            AddTodoItem({ content: this.todoContent, type: this.todoType }).then((newTodo) => {
+                this.addTodo(newTodo);
+                this.showSnackbar({ type: 'success', msg: '添加成功！' });
+                this.$router.push({ name: 'list' });
+            }, (err) => {
+                this.showSnackbar({ type: 'error', msg: codeToMessage(err.code) });
+            })
+        },
+        gotoList: function() {
             this.$router.push({
-                name:'list'
+                name: 'list'
             });
         }
     },
@@ -123,7 +145,7 @@ export default {
             }]
         });
         let todoId = this.$route.params.id;
-        if (todoId && (this.currentTodo = this.todos.get(todoId))) {
+        if (todoId && (this.pageType !== 'add') && (this.currentTodo = this.todos.get(todoId))) {
             console.log(this.currentTodo);
             this.currentTodo = this.todos.get(todoId);
             this.todoType = this.currentTodo.get('type');
@@ -133,9 +155,14 @@ export default {
     mounted: function() {
         EventBus.$on('app-header:click-action', (eventData) => {
             console.log(eventData);
+
             switch (eventData.actionIdx) {
                 case 0:
-                    this.saveChange();
+                    if (this.pageType == 'edit') {
+                        this.saveTodoChange();
+                    } else if (this.pageType == 'add') {
+                        this.createTodo();
+                    }
                     break;
                 default:
             }
@@ -144,6 +171,13 @@ export default {
             console.log('back');
             console.log(eventData);
             this.dialogShow = true;
+            return
+            if (this.isContentChanged()) {
+                this.saveTodoChange();
+            } else {
+                this.gotoList();
+            }
+
         });
     },
     beforeDestroy: function() {
