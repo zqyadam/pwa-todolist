@@ -12,8 +12,8 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn class="blue--text blue-1" flat="flat" @click.native="dialogShow = false">放弃</v-btn>
-                        <v-btn primary @click.native="dialogShow = false">保存</v-btn>
+                        <v-btn class="blue--text blue-1" flat="flat" @click.native="showSaveChangeDialogCancelled">放弃</v-btn>
+                        <v-btn primary @click.native="showSaveChangeDialogConfirmed">保存</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -74,38 +74,56 @@ export default {
         ...mapActions('appShell/appSnackbar', [
             'showSnackbar',
         ]),
+        // 显示保存更改对话框
+        showSaveChangeDialog: function() {
+            this.dialogShow = true;
+        },
+        // 点击保存更改对话框的"保存"按钮
+        showSaveChangeDialogConfirmed: function() {
+            console.log('dialog confirm clicked');
+            if (this.pageType === 'edit') {
+                this.saveTodoChange();
+            } else if (this.pageType === 'add') {
+                this.createTodo();
+            } else {
+                this.gotoListPage();
+            }
+        },
+        // 点击保存更改对话框的"放弃"按钮
+        showSaveChangeDialogCancelled: function() {
+            this.gotoListPage();
+        },
         isContentChanged: function() {
-            return this.currentTodo.get('content') === this.todoContent;
+            return this.currentTodo.get('content') !== this.todoContent;
         },
         saveTodoChange: function() {
             this.currentTodo.set('type', this.todoType);
             this.currentTodo.set('content', this.todoContent);
             this.setTodo(this.currentTodo).then((changedTodo) => {
                 this.showSnackbar({ type: 'success', msg: '保存成功！' });
-                this.gotoList();
+                this.gotoListPage();
             }, (err) => {
                 console.log(err);
+                this.showSnackbar({ type: 'error', msg: codeToMessage(err.code) });
             });
-        },
-        discardTodoChange: function() {
-
         },
         createTodo: function() {
             // 没有内容直接返回
             if (!this.todoContent) {
-                this.showSnackbar({ type: 'error', msg: '写点什么吧~！' });
+                this.showSnackbar({ type: 'error', msg: '什么都没有，写点什么吧~！' });
                 return
             }
-
+            console.log('add a new todo');
             AddTodoItem({ content: this.todoContent, type: this.todoType }).then((newTodo) => {
                 this.addTodo(newTodo);
+                this.currentTodo = newTodo;
                 this.showSnackbar({ type: 'success', msg: '添加成功！' });
                 this.$router.push({ name: 'list' });
             }, (err) => {
                 this.showSnackbar({ type: 'error', msg: codeToMessage(err.code) });
             })
         },
-        gotoList: function() {
+        gotoListPage: function() {
             this.$router.push({
                 name: 'list'
             });
@@ -170,13 +188,14 @@ export default {
         EventBus.$on(`app-header:click-back`, (eventData) => {
             console.log('back');
             console.log(eventData);
-            this.dialogShow = true;
-            return
-            if (this.isContentChanged()) {
-                this.saveTodoChange();
+            if (this.pageType === 'edit' && this.isContentChanged()) {
+                this.showSaveChangeDialog();
+            } else if (this.pageType === 'add' && this.todoContent) {
+                this.showSaveChangeDialog();
             } else {
-                this.gotoList();
+                this.gotoListPage();
             }
+
 
         });
     },
