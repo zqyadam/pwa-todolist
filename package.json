@@ -1,7 +1,7 @@
 {
-  "name": "pwa-todolist",
+  "name": "TodoList",
   "version": "1.0.0",
-  "description": "这是一个 pwa 项目",
+  "description": "这是一个支持pwa的TodoList项目",
   "author": "zqyadam <zqyadam@qq.com>",
   "private": true,
   "scripts": {
