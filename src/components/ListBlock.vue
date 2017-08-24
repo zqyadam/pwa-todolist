@@ -34,6 +34,7 @@ import { dateFormat } from '@/common/common';
 import { mapActions } from 'vuex';
 
 
+
 export default {
     data() {
         return {
@@ -127,7 +128,8 @@ export default {
         },
         deleteTodo:function(todo) {
             this.$emit('deleteTodo',todo.id);
-        }
+        },
+       
     },
     created: function() {
         Date.prototype.format = dateFormat;

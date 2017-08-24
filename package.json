@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "fastclick": "^1.0.6",
+    "github-markdown-css": "^2.8.0",
     "iscroll": "5.1.0",
     "leancloud-storage": "^3.1.0",
+    "marked": "^0.3.6",
     "normalize.css": "^7.0.0",
     "vue": "^2.4.2",
     "vue-awesome": "^2.3.1",
