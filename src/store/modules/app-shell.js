@@ -225,6 +225,13 @@ export default {
                         sublistTitle: 'About',
                         list: [
                             {
+                                text: '帮助',
+                                icon: 'help_outline',
+                                route: {
+                                    name:'help'
+                                }
+                            },
+                            {
                                 text: '登出',
                                 icon: 'exit_to_app',
                                 route: {

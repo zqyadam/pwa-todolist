@@ -24,6 +24,7 @@ let NotFound = () =>
     import ('@/pages/NotFound.vue');
 let Edit = () =>
     import ('@/pages/Edit.vue');
+let Help = () => import('@/pages/Help.vue');
 
 // let User = () => import('@/pages/User.vue');
 // let Search = () => import('@/pages/Search.vue');
@@ -84,6 +85,14 @@ export function createRouter() {
                 component: Detail,
                 meta: {
                     requiresAuth: true,
+                    notKeepAlive: true
+                }
+            },
+            {
+                path: '/help',
+                name: 'help',
+                component: Help,
+                meta: {
                     notKeepAlive: true
                 }
             },
