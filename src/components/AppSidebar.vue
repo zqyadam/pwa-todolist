@@ -4,7 +4,7 @@
         <div
             class="app-sidebar-content">
             <!-- 头部 -->
-            <div v-if="title" class="app-sidebar-title" @click.stop="closeAndGo('/')">
+            <div v-if="title" class="app-sidebar-title" @click.stop="closeAndGo('/list')">
                 <span class="app-sidebar-title-left-icon">
                     <img v-if="title.imageLeft" :src="title.imageLeft" :alt="title.altLeft"></img>
                     <icon v-else-if="title.svgLeft" :name="title.svgLeft"></icon>
@@ -22,10 +22,7 @@
 
             <!-- 用户信息 -->
             <div v-if="user" class="app-sidebar-user">
-                 <div class="user-avatar">
-                    <v-icon light class="user-avatar-icon">face</v-icon>
-                 </div>
-                 <div class="user-info">
+                 <div class="user-info text-xs-left">
                      <div class="user-name"><v-icon>person</v-icon>{{user.name}}</div>
                      <div class="user-location"><v-icon>room</v-icon>{{user.location}}</div>
                      <div class="user-email"><v-icon>email</v-icon>{{user.email}}</div>

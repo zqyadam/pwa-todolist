@@ -14,13 +14,17 @@ let Login = () =>
     import ('@/pages/Login.vue');
 let Register = () =>
     import ('@/pages/Register.vue');
+let Logout = () =>
+    import ('@/pages/Logout.vue');
 let List = () =>
     import ('@/pages/List.vue');
-let Detail = () => import('@/pages/Detail.vue');
+let Detail = () =>
+    import ('@/pages/Detail.vue');
 let NotFound = () =>
     import ('@/pages/NotFound.vue');
 let Edit = () =>
-    import ('@/pages/Edit.vue')
+    import ('@/pages/Edit.vue');
+
 // let User = () => import('@/pages/User.vue');
 // let Search = () => import('@/pages/Search.vue');
 
@@ -49,6 +53,15 @@ export function createRouter() {
                 }
             },
             {
+                path: '/logout',
+                name: 'logout',
+                component: Logout,
+                meta: {
+                    requiresAuth: true,
+                    notKeepAlive: true
+                }
+            },
+            {
                 path: '/list',
                 name: 'list',
                 component: List,
@@ -71,6 +84,7 @@ export function createRouter() {
                 component: Detail,
                 meta: {
                     requiresAuth: true,
+                    notKeepAlive: true
                 }
             },
             // {

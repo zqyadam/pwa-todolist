@@ -80,7 +80,7 @@ export default {
             }
         },
     },
-    activated() {
+    created() {
 
         let todoId = this.$route.params.id;
 
