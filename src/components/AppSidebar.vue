@@ -24,7 +24,7 @@
             <div v-if="user" class="app-sidebar-user">
                  <div class="user-info text-xs-left">
                      <div class="user-name"><v-icon>person</v-icon>{{user.name}}</div>
-                     <div class="user-location"><v-icon>room</v-icon>{{user.location}}</div>
+                     <!-- <div class="user-location"><v-icon>room</v-icon>{{user.location}}</div> -->
                      <div class="user-email"><v-icon>email</v-icon>{{user.email}}</div>
                  </div>
             </div>

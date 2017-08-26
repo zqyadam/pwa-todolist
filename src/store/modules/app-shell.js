@@ -214,7 +214,6 @@ export default {
 
                 user:{
                     name:'test',
-                    location:'Shenyang',
                     email:'test@test.com'
                 },
 
@@ -260,11 +259,23 @@ export default {
                  */
                 hideSidebar({commit}) {
                     commit(types.SET_SIDEBAR_VISIBILITY, false);
+                },
+
+                /**
+                 * 设置侧边栏信息
+                 *
+                 * @param {Object} sidebarInfo 侧边栏内容
+                 */
+                setAppSidebar({commit}, sidebarInfo){
+                    commit(types.SET_APP_SIDEBAR, sidebarInfo);
                 }
             },
             mutations: {
                 [types.SET_SIDEBAR_VISIBILITY](state, sidebarVisibility) {
                     state.show = sidebarVisibility;
+                },
+                [types.SET_APP_SIDEBAR](state, sidebarInfo){
+                    state = Object.assign(state, sidebarInfo);
                 }
             }
         },

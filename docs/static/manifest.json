@@ -1,6 +1,6 @@
 {
-  "name": "pwa-todolist",
-  "short_name": "pwa-todolist",
+  "name": "TodoList",
+  "short_name": "TodoList",
   "icons": [
     {
       "src": "/static/img/icons/android-chrome-192x192.png",

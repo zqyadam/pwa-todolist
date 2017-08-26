@@ -94,7 +94,7 @@ export default {
             this.gotoListPage();
         },
         isContentChanged: function() {
-            return this.currentTodo.get('content') !== this.todoContent;
+            return (this.currentTodo.get('content') !== this.todoContent) || (this.todoType !== this.currentTodo.get('type'));
         },
         saveTodoChange: function() {
             this.currentTodo.set('type', this.todoType);
@@ -163,6 +163,7 @@ export default {
             }]
         });
         let todoId = this.$route.params.id;
+        // init 
         if (todoId && (this.pageType !== 'add') && (this.currentTodo = this.todos.get(todoId))) {
             console.log(this.currentTodo);
             this.currentTodo = this.todos.get(todoId);

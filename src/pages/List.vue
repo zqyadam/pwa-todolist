@@ -29,7 +29,7 @@ import AppMask from '@/components/AppMask'
 
 import { mapActions, mapState } from 'vuex';
 import EventBus from '@/event-bus';
-import { LoadServerTodos, codeToMessage } from '@/common/api';
+import { LoadServerTodos, codeToMessage, getCurrentUser } from '@/common/api';
 
 export default {
     name: 'todo',
@@ -76,6 +76,9 @@ export default {
         ]),
         ...mapActions('appShell/appSnackbar', [
             'showSnackbar',
+        ]),
+        ...mapActions('appShell/appSidebar', [
+            'setAppSidebar',
         ]),
         ...mapActions('todo', [
             'initTodos',
@@ -143,6 +146,13 @@ export default {
             }]
         });
         this.showBottomNav();
+        let currentUser = getCurrentUser();
+        this.setAppSidebar({
+            user:{
+                name: currentUser.get('username'),
+                email:currentUser.get('email')
+            }
+        })
     },
     created: function() {
         EventBus.$on('app-bottom-navigator:click-nav', (eventData) => {
@@ -158,7 +168,8 @@ export default {
         }, (err) => {
             this.showSnackbar({ type: 'error', msg: codeToMessage(err.code) })
             console.log(err);
-        })
+        });
+        
     }
 }
 
