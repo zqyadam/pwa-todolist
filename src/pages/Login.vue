@@ -13,7 +13,7 @@
         </v-layout>
         <v-layout justify-center>
             <v-flex xs8 lg4>
-                <v-text-field prepend-icon="lock" v-model.trim="password" :type="eye ? 'text' : 'password' " name="input-1" label="密码" id="password" required counter :append-icon="eye ? 'visibility' : 'visibility_off'" :append-icon-cb="function(){eye = !eye}" :rules="[checkPassword]"></v-text-field>
+                <v-text-field prepend-icon="lock" v-model.trim="password" :type="eye ? 'text' : 'password' " name="input-1" label="密码" id="password" required counter :append-icon="eye ? 'visibility' : 'visibility_off'" :append-icon-cb="() =>(eye = !eye)" :rules="[checkPassword]"></v-text-field>
             </v-flex>
         </v-layout>
         <v-layout justify-center>

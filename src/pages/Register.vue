@@ -2,10 +2,8 @@
     <div>
         <v-container fluid>
             <v-layout justify-center>
-                <v-flex lg4>
-                    <p class="ma-5">
-                        用户注册
-                    </p>
+                <v-flex lg4 class="ma-5 register-title">
+                    用户注册
                 </v-flex>
             </v-layout>
             <v-layout justify-center>
@@ -45,9 +43,9 @@ export default {
     name: 'register',
     data() {
         return {
-            email: '11@qq.com',
+            email: '',
             nickname: '',
-            password: '111111',
+            password: '',
             eye: false,
             btnText: '立即注册',
         }
@@ -60,14 +58,14 @@ export default {
             'showSnackbar',
         ]),
         init() {
-        	this.email= '11@qq.com';
-            this.nickname= '';
-            this.password= '111111';
-            this.eye= false;
-            this.btnText= '立即注册';
-            this.snackbar= false;
-            this.snackbarType= '';
-            this.snackbarMsg= '';
+            this.email = '';
+            this.nickname = '';
+            this.password = '';
+            this.eye = false;
+            this.btnText = '立即注册';
+            this.snackbar = false;
+            this.snackbarType = '';
+            this.snackbarMsg = '';
         },
         checkPassword: function() {
             this.password = clearSpace(this.password);
@@ -95,7 +93,7 @@ export default {
         register: function() {
 
             if (this.checkEmail() !== true || this.checkPassword() !== true) {
-                // 验证邮箱和密码失败
+                // 验证邮箱和密码失败直接返回
                 return '';
             }
             // 构建用户信息
@@ -107,14 +105,14 @@ export default {
             this.btnText = "注册中..."
             registeUser(userinfo).then(loginedUser => {
                 // 注册成功
-                this.showSnackbar({type:'success', msg:'注册成功！'});
+                this.showSnackbar({ type: 'success', msg: '注册成功！' });
                 this.btnText = "注册成功";
                 this.$router.push({ name: 'list' })
             }, err => {
                 // 注册失败
                 console.log(err.message);
                 this.btnText = "立即注册";
-                this.showSnackbar({type:'error', msg:codeToMessage(err.code)});
+                this.showSnackbar({ type: 'error', msg: codeToMessage(err.code) });
             })
             console.log(userinfo);
         }
@@ -138,9 +136,8 @@ export default {
 
 </script>
 <style scoped>
-p {
+.register-title {
     font-size: 48px;
-    /*border: 1px solid red;*/
 }
 
 .container {
@@ -149,7 +146,6 @@ p {
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /*border: 1px solid red;*/
 }
 
 </style>
