@@ -22,6 +22,17 @@
         <% for (var cssFilePath of htmlWebpackPlugin.files.css) { %>
             <link rel="preload" href="<%= cssFilePath %>" as="style">
         <% } %>
+
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?4d32c0618a7e940e509a6bac65b1f3c9";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
     </head>
     <body>
         <div id="app"></div>
